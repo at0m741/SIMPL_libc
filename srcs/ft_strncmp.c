@@ -15,12 +15,15 @@ inline int ft_strncmp(const char *s1, const char *s2, size_t n)
     /*then we need to realign the pointer to 32 bytes boundary*/
 
     uint8_t alignement_offset = (uintptr_t)s1 % AVX2_ALIGNMENT;
-    if (alignement_offset != 0){
+    if (alignement_offset != 0)
+    {
         size_t initial_bytes = AVX2_ALIGNMENT - alignement_offset;
-        if (initial_bytes > n){
+        if (initial_bytes > n)
+        {
             initial_bytes = n;
         }
-        for (size_t i = 0; i < initial_bytes; i++){
+        for (size_t i = 0; i < initial_bytes; i++)
+        {
             if (s1[i] != s2[i])
                 return (unsigned char)s1[i] - (unsigned char)s2[i];
         }
@@ -53,9 +56,8 @@ inline int ft_strncmp(const char *s1, const char *s2, size_t n)
     const char *char_ptr2 = (const char *)(ptr2 + chunks);
 
     for (size_t i = 0; i < remainings; i++)
-    {
         if (char_ptr1[i] != char_ptr2[i])
             return (int)((unsigned char)char_ptr1[i] - (unsigned char)char_ptr2[i]);
-    }
+
     return 0;
 }

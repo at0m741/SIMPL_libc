@@ -40,4 +40,16 @@ static inline int has_zero_byte(__m256i v);
 */
 size_t ft_strlen(const char *s);
 
-
+/**
+	*@brief copy n bytes from src to dst
+	*@param dst The destination buffer
+	*@param src The source buffer
+	*@param n The number of bytes to copy
+	*@return void* The destination buffer
+	*@note This function is optimized using AVX2 instructions
+	*@note if dst or src is NULL, the function will return NULL
+	*@note if n is 0, the function will return dst
+	*@note if the src is not aligned on a 32 bytes boundary, 
+	the function will handle the initial bytes separately 
+*/
+void *ft_memcpy(void *dst, const void *src, size_t n);
