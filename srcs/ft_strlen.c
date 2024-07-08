@@ -24,7 +24,8 @@ size_t ft_strlen(const char *s) {
 
     /* check if the pointer is aligned on a 32 bytes boundary */
     /* if not, we need to handle the initial bytes separately */
-    /*then we need to realign the pointer to 32 bytes boundary*/    size_t alignment_offset = (uintptr_t)ptr % AVX2_ALIGNMENT;
+    /*then we need to realign the pointer to 32 bytes boundary*/    
+    size_t alignment_offset = (uintptr_t)ptr % AVX2_ALIGNMENT;
     if (alignment_offset != 0) {
         size_t initial_bytes = AVX2_ALIGNMENT - alignment_offset;
         for (size_t i = 0; i < initial_bytes; i++) {
