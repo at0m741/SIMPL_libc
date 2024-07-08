@@ -57,6 +57,5 @@ inline int ft_strncmp(const char *s1, const char *s2, size_t n)
         if (char_ptr1[i] != char_ptr2[i])
             return (int)((unsigned char)char_ptr1[i] - (unsigned char)char_ptr2[i]);
     }
-    __asm__("");
     return 0;
 }
