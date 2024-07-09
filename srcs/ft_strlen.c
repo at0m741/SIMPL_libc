@@ -20,7 +20,10 @@ static inline int has_zero_byte(__m256i v) {
 __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 */
 #define SMALL_STRING_THRESHOLD 16
-
+#define VEC_SIZE 32
+#define AVX2_SIZE 32
+#define BLOCK_SIZE 4096
+#define PAGE_SIZE 4096
 size_t ft_strlen(const char *s) 
 {
     const char *ptr = s;
@@ -46,7 +49,7 @@ size_t ft_strlen(const char *s)
         _mm_prefetch(ptr + align_size + PAGE_SIZE, _MM_HINT_NTA);
 
         if (mask)
-            return ptr - str + __builtin_ctz(mask);
+            return ptr - s + __builtin_ctz(mask);
         
         ptr += align_size;
     }
@@ -88,12 +91,4 @@ size_t ft_strlen(const char *s)
 				return (ptr - s) + i;
 	}
     return 0; // This line is unreachable but included to prevent compiler warnings
-}
-#include <string.h>
-
-int main()
-{
-	char *str = "hefasdfajshflahsjdfhajshdfjahsdfljhasjdhfjashdfjkahsdjkfhajkdfhjahdfjahdfhashdfajshdfjkahdfjahsdfjlllo there";
-	int oui = ft_strlen(str);
-	return 0;
 }

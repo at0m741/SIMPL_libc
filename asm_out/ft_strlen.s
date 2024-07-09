@@ -8,155 +8,314 @@ ft_strlen:                              # @ft_strlen
 	.cfi_startproc
 # %bb.0:
 	test	rdi, rdi
-	je	.LBB0_41
-# %bb.1:
-	prefetcht0	byte ptr [rdi]
-	prefetcht0	byte ptr [rdi + 32]
-	vmovdqu	xmm0, xmmword ptr [rdi]
-	vpxor	xmm1, xmm1, xmm1
-	vpcmpeqb	xmm1, xmm0, xmm1
-	vpmovmskb	eax, xmm1
-	test	ax, ax
-	je	.LBB0_18
+	je	.LBB0_1
 # %bb.2:
-	vmovd	eax, xmm0
-	test	al, al
-	je	.LBB0_41
+	prefetchnta	byte ptr [rdi]
+	prefetchnta	byte ptr [rdi + 4096]
+	mov	rdx, rdi
+	mov	rcx, rdi
+	and	rdx, 31
+	je	.LBB0_12
 # %bb.3:
-	cmp	byte ptr [rdi + 1], 0
-	je	.LBB0_28
+	mov	eax, 32
+	sub	rax, rdx
+	vpxor	xmm0, xmm0, xmm0
+	vpcmpeqb	ymm0, ymm0, ymmword ptr [rdi]
+	vpmovmskb	ecx, ymm0
+	prefetchnta	byte ptr [rdi + rax]
+	prefetchnta	byte ptr [rdi + rax + 4096]
+	test	ecx, ecx
+	je	.LBB0_5
 # %bb.4:
-	cmp	byte ptr [rdi + 2], 0
-	je	.LBB0_29
-# %bb.5:
-	cmp	byte ptr [rdi + 3], 0
-	je	.LBB0_30
+	bsf	eax, ecx
+	vzeroupper
+	ret
+.LBB0_5:
+	lea	rcx, [rdi + rax]
+	mov	rdx, rcx
+	and	rdx, 31
+	je	.LBB0_12
 # %bb.6:
-	cmp	byte ptr [rdi + 4], 0
-	je	.LBB0_31
-# %bb.7:
-	cmp	byte ptr [rdi + 5], 0
-	je	.LBB0_32
-# %bb.8:
-	cmp	byte ptr [rdi + 6], 0
-	je	.LBB0_33
+	cmp	byte ptr [rcx], 0
+	je	.LBB0_7
 # %bb.9:
-	cmp	byte ptr [rdi + 7], 0
-	je	.LBB0_34
-# %bb.10:
-	cmp	byte ptr [rdi + 8], 0
-	je	.LBB0_35
-# %bb.11:
-	cmp	byte ptr [rdi + 9], 0
-	je	.LBB0_36
-# %bb.12:
-	cmp	byte ptr [rdi + 10], 0
-	je	.LBB0_37
-# %bb.13:
-	cmp	byte ptr [rdi + 11], 0
-	je	.LBB0_38
-# %bb.14:
-	cmp	byte ptr [rdi + 12], 0
-	je	.LBB0_39
-# %bb.15:
-	cmp	byte ptr [rdi + 13], 0
-	je	.LBB0_40
+	cmp	byte ptr [rcx + 1], 0
+	je	.LBB0_10
 # %bb.16:
-	cmp	byte ptr [rdi + 14], 0
-	je	.LBB0_42
-# %bb.17:
-	cmp	byte ptr [rdi + 15], 0
-	je	.LBB0_43
-.LBB0_18:
-	lea	r8, [rdi + 16]
-	mov	rsi, r8
-	mov	rcx, r8
-	and	rsi, 31
-	je	.LBB0_23
-# %bb.19:
-	mov	ecx, 32
-	sub	rcx, rsi
-	add	rsi, -32
-	mov	eax, 16
-	.p2align	4, 0x90
-.LBB0_20:                               # =>This Inner Loop Header: Depth=1
-	cmp	byte ptr [rdi + rax], 0
-	je	.LBB0_26
-# %bb.21:                               #   in Loop: Header=BB0_20 Depth=1
-	lea	rdx, [rsi + rax]
-	add	rdx, 1
-	add	rax, 1
-	cmp	rdx, 16
-	jne	.LBB0_20
+	cmp	byte ptr [rcx + 2], 0
+	je	.LBB0_17
+# %bb.18:
+	cmp	byte ptr [rcx + 3], 0
+	je	.LBB0_19
+# %bb.20:
+	cmp	byte ptr [rcx + 4], 0
+	je	.LBB0_21
 # %bb.22:
-	add	rcx, r8
-.LBB0_23:
-	mov	rsi, rcx
-	sub	rsi, r8
-	add	rsi, -16
+	cmp	byte ptr [rcx + 5], 0
+	je	.LBB0_23
+# %bb.24:
+	cmp	byte ptr [rcx + 6], 0
+	je	.LBB0_25
+# %bb.26:
+	cmp	byte ptr [rcx + 7], 0
+	je	.LBB0_27
+# %bb.28:
+	cmp	byte ptr [rcx + 8], 0
+	je	.LBB0_29
+# %bb.30:
+	cmp	byte ptr [rcx + 9], 0
+	je	.LBB0_31
+# %bb.32:
+	cmp	byte ptr [rcx + 10], 0
+	je	.LBB0_33
+# %bb.34:
+	cmp	byte ptr [rcx + 11], 0
+	je	.LBB0_35
+# %bb.36:
+	cmp	byte ptr [rcx + 12], 0
+	je	.LBB0_37
+# %bb.38:
+	cmp	byte ptr [rcx + 13], 0
+	je	.LBB0_39
+# %bb.40:
+	cmp	byte ptr [rcx + 14], 0
+	je	.LBB0_41
+# %bb.42:
+	cmp	byte ptr [rcx + 15], 0
+	je	.LBB0_43
+# %bb.44:
+	cmp	byte ptr [rcx + 16], 0
+	je	.LBB0_45
+# %bb.46:
+	cmp	byte ptr [rcx + 17], 0
+	je	.LBB0_47
+# %bb.48:
+	cmp	byte ptr [rcx + 18], 0
+	je	.LBB0_49
+# %bb.50:
+	cmp	byte ptr [rcx + 19], 0
+	je	.LBB0_51
+# %bb.52:
+	cmp	byte ptr [rcx + 20], 0
+	je	.LBB0_53
+# %bb.54:
+	cmp	byte ptr [rcx + 21], 0
+	je	.LBB0_55
+# %bb.56:
+	cmp	byte ptr [rcx + 22], 0
+	je	.LBB0_57
+# %bb.58:
+	cmp	byte ptr [rcx + 23], 0
+	je	.LBB0_59
+# %bb.60:
+	cmp	byte ptr [rcx + 24], 0
+	je	.LBB0_61
+# %bb.62:
+	cmp	byte ptr [rcx + 25], 0
+	je	.LBB0_63
+# %bb.64:
+	cmp	byte ptr [rcx + 26], 0
+	je	.LBB0_65
+# %bb.66:
+	cmp	byte ptr [rcx + 27], 0
+	je	.LBB0_67
+# %bb.68:
+	cmp	byte ptr [rcx + 28], 0
+	je	.LBB0_69
+# %bb.70:
+	cmp	byte ptr [rcx + 29], 0
+	je	.LBB0_71
+# %bb.72:
+	cmp	byte ptr [rcx + 30], 0
+	je	.LBB0_73
+# %bb.74:
+	cmp	byte ptr [rcx + 31], 0
+	je	.LBB0_75
+# %bb.11:
+	mov	eax, 32
+	sub	rax, rdx
+	add	rcx, rax
+.LBB0_12:
+	mov	rdx, rcx
+	sub	rdx, rdi
+	add	rdx, -32
 	.p2align	4, 0x90
-.LBB0_24:                               # =>This Inner Loop Header: Depth=1
+.LBB0_13:                               # =>This Inner Loop Header: Depth=1
 	vmovdqu	ymm0, ymmword ptr [rcx]
 	add	rcx, 32
-	add	rsi, 32
+	add	rdx, 32
 	vptest	ymm0, ymm0
-	je	.LBB0_24
-# %bb.25:
+	je	.LBB0_13
+# %bb.14:
 	vpxor	xmm1, xmm1, xmm1
 	vpcmpeqb	ymm0, ymm0, ymm1
 	vpmovmskb	eax, ymm0
 	bsf	eax, eax
-	add	rax, rsi
-.LBB0_26:
+	add	rax, rdx
+	vzeroupper
+	ret
+.LBB0_7:
+	xor	ecx, ecx
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_10:
+	mov	ecx, 1
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_17:
+	mov	ecx, 2
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_19:
+	mov	ecx, 3
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_21:
+	mov	ecx, 4
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_23:
+	mov	ecx, 5
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_25:
+	mov	ecx, 6
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_27:
+	mov	ecx, 7
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_29:
+	mov	ecx, 8
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_31:
+	mov	ecx, 9
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_1:
+	xor	eax, eax
+	ret
+.LBB0_33:
+	mov	ecx, 10
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_35:
+	mov	ecx, 11
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_37:
+	mov	ecx, 12
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_39:
+	mov	ecx, 13
+	add	rax, rcx
 	vzeroupper
 	ret
 .LBB0_41:
-	xor	eax, eax
-	ret
-.LBB0_28:
-	mov	eax, 1
-	ret
-.LBB0_29:
-	mov	eax, 2
-	ret
-.LBB0_30:
-	mov	eax, 3
-	ret
-.LBB0_31:
-	mov	eax, 4
-	ret
-.LBB0_32:
-	mov	eax, 5
-	ret
-.LBB0_33:
-	mov	eax, 6
-	ret
-.LBB0_34:
-	mov	eax, 7
-	ret
-.LBB0_35:
-	mov	eax, 8
-	ret
-.LBB0_36:
-	mov	eax, 9
-	ret
-.LBB0_37:
-	mov	eax, 10
-	ret
-.LBB0_38:
-	mov	eax, 11
-	ret
-.LBB0_39:
-	mov	eax, 12
-	ret
-.LBB0_40:
-	mov	eax, 13
-	ret
-.LBB0_42:
-	mov	eax, 14
+	mov	ecx, 14
+	add	rax, rcx
+	vzeroupper
 	ret
 .LBB0_43:
-	mov	eax, 15
+	mov	ecx, 15
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_45:
+	mov	ecx, 16
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_47:
+	mov	ecx, 17
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_49:
+	mov	ecx, 18
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_51:
+	mov	ecx, 19
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_53:
+	mov	ecx, 20
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_55:
+	mov	ecx, 21
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_57:
+	mov	ecx, 22
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_59:
+	mov	ecx, 23
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_61:
+	mov	ecx, 24
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_63:
+	mov	ecx, 25
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_65:
+	mov	ecx, 26
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_67:
+	mov	ecx, 27
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_69:
+	mov	ecx, 28
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_71:
+	mov	ecx, 29
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_73:
+	mov	ecx, 30
+	add	rax, rcx
+	vzeroupper
+	ret
+.LBB0_75:
+	mov	ecx, 31
+	add	rax, rcx
+	vzeroupper
 	ret
 .Lfunc_end0:
 	.size	ft_strlen, .Lfunc_end0-ft_strlen

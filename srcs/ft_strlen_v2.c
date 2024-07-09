@@ -6,7 +6,7 @@
 /*   By: ltouzali <ltouzali@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 17:20:48 by ltouzali          #+#    #+#             */
-/*   Updated: 2024/07/09 21:25:45 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/07/09 21:34:51 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ size_t strlen_avx2(const char* str)
 		__m256i data2 = _mm256_load_si256((__m256i*)(ptr + VEC_SIZE));
 		__m256i data3 = _mm256_load_si256((__m256i*)(ptr + 2 * VEC_SIZE));
 		__m256i data4 = _mm256_load_si256((__m256i*)(ptr + 3 * VEC_SIZE));
-		__m256i data5 = _mm256_load_si256((__m256i*)(ptr + 4 * VEC_SIZE));
        
 		/* compare the data with the zero mask */
 		__m256i cmp1 = _mm256_cmpeq_epi8(data1, zero_mask);
