@@ -57,6 +57,7 @@ ft_memset:                              # @ft_memset
 	shr	rax, 5
 	mov	edx, r13d
 	and	edx, 31
+	prefetcht0	byte ptr [rdi]
 	test	rax, rax
 	je	.LBB0_18
 # %bb.6:
