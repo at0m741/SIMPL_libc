@@ -7,313 +7,47 @@
 ft_strlen:                              # @ft_strlen
 	.cfi_startproc
 # %bb.0:
-	test	rdi, rdi
-	je	.LBB0_1
-# %bb.2:
-	prefetchnta	byte ptr [rdi]
-	prefetchnta	byte ptr [rdi + 4096]
-	mov	rdx, rdi
 	mov	rcx, rdi
-	and	rdx, 31
-	je	.LBB0_12
-# %bb.3:
-	mov	eax, 32
-	sub	rax, rdx
+	mov	rax, rdi
+	and	rcx, 31
+	je	.LBB0_3
+# %bb.1:
 	vpxor	xmm0, xmm0, xmm0
 	vpcmpeqb	ymm0, ymm0, ymmword ptr [rdi]
-	vpmovmskb	ecx, ymm0
-	prefetchnta	byte ptr [rdi + rax]
-	prefetchnta	byte ptr [rdi + rax + 4096]
-	test	ecx, ecx
-	je	.LBB0_5
-# %bb.4:
-	bsf	eax, ecx
-	vzeroupper
-	ret
-.LBB0_5:
-	lea	rcx, [rdi + rax]
-	mov	rdx, rcx
-	and	rdx, 31
-	je	.LBB0_12
-# %bb.6:
-	cmp	byte ptr [rcx], 0
-	je	.LBB0_7
-# %bb.9:
-	cmp	byte ptr [rcx + 1], 0
-	je	.LBB0_10
-# %bb.16:
-	cmp	byte ptr [rcx + 2], 0
-	je	.LBB0_17
-# %bb.18:
-	cmp	byte ptr [rcx + 3], 0
-	je	.LBB0_19
-# %bb.20:
-	cmp	byte ptr [rcx + 4], 0
-	je	.LBB0_21
-# %bb.22:
-	cmp	byte ptr [rcx + 5], 0
-	je	.LBB0_23
-# %bb.24:
-	cmp	byte ptr [rcx + 6], 0
-	je	.LBB0_25
-# %bb.26:
-	cmp	byte ptr [rcx + 7], 0
-	je	.LBB0_27
-# %bb.28:
-	cmp	byte ptr [rcx + 8], 0
-	je	.LBB0_29
-# %bb.30:
-	cmp	byte ptr [rcx + 9], 0
-	je	.LBB0_31
-# %bb.32:
-	cmp	byte ptr [rcx + 10], 0
-	je	.LBB0_33
-# %bb.34:
-	cmp	byte ptr [rcx + 11], 0
-	je	.LBB0_35
-# %bb.36:
-	cmp	byte ptr [rcx + 12], 0
-	je	.LBB0_37
-# %bb.38:
-	cmp	byte ptr [rcx + 13], 0
-	je	.LBB0_39
-# %bb.40:
-	cmp	byte ptr [rcx + 14], 0
-	je	.LBB0_41
-# %bb.42:
-	cmp	byte ptr [rcx + 15], 0
-	je	.LBB0_43
-# %bb.44:
-	cmp	byte ptr [rcx + 16], 0
-	je	.LBB0_45
-# %bb.46:
-	cmp	byte ptr [rcx + 17], 0
-	je	.LBB0_47
-# %bb.48:
-	cmp	byte ptr [rcx + 18], 0
-	je	.LBB0_49
-# %bb.50:
-	cmp	byte ptr [rcx + 19], 0
-	je	.LBB0_51
-# %bb.52:
-	cmp	byte ptr [rcx + 20], 0
-	je	.LBB0_53
-# %bb.54:
-	cmp	byte ptr [rcx + 21], 0
-	je	.LBB0_55
-# %bb.56:
-	cmp	byte ptr [rcx + 22], 0
-	je	.LBB0_57
-# %bb.58:
-	cmp	byte ptr [rcx + 23], 0
-	je	.LBB0_59
-# %bb.60:
-	cmp	byte ptr [rcx + 24], 0
-	je	.LBB0_61
-# %bb.62:
-	cmp	byte ptr [rcx + 25], 0
-	je	.LBB0_63
-# %bb.64:
-	cmp	byte ptr [rcx + 26], 0
-	je	.LBB0_65
-# %bb.66:
-	cmp	byte ptr [rcx + 27], 0
-	je	.LBB0_67
-# %bb.68:
-	cmp	byte ptr [rcx + 28], 0
-	je	.LBB0_69
-# %bb.70:
-	cmp	byte ptr [rcx + 29], 0
-	je	.LBB0_71
-# %bb.72:
-	cmp	byte ptr [rcx + 30], 0
-	je	.LBB0_73
-# %bb.74:
-	cmp	byte ptr [rcx + 31], 0
-	je	.LBB0_75
-# %bb.11:
-	mov	eax, 32
-	sub	rax, rdx
-	add	rcx, rax
-.LBB0_12:
-	mov	rdx, rcx
-	sub	rdx, rdi
-	add	rdx, -32
-	.p2align	4, 0x90
-.LBB0_13:                               # =>This Inner Loop Header: Depth=1
-	vmovdqu	ymm0, ymmword ptr [rcx]
-	add	rcx, 32
-	add	rdx, 32
-	vptest	ymm0, ymm0
-	je	.LBB0_13
-# %bb.14:
-	vpxor	xmm1, xmm1, xmm1
-	vpcmpeqb	ymm0, ymm0, ymm1
 	vpmovmskb	eax, ymm0
+	test	eax, eax
+	je	.LBB0_2
+# %bb.7:
 	bsf	eax, eax
-	add	rax, rdx
 	vzeroupper
 	ret
-.LBB0_7:
-	xor	ecx, ecx
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_10:
-	mov	ecx, 1
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_17:
-	mov	ecx, 2
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_19:
-	mov	ecx, 3
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_21:
-	mov	ecx, 4
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_23:
-	mov	ecx, 5
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_25:
-	mov	ecx, 6
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_27:
-	mov	ecx, 7
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_29:
-	mov	ecx, 8
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_31:
-	mov	ecx, 9
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_1:
-	xor	eax, eax
-	ret
-.LBB0_33:
-	mov	ecx, 10
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_35:
-	mov	ecx, 11
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_37:
-	mov	ecx, 12
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_39:
-	mov	ecx, 13
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_41:
-	mov	ecx, 14
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_43:
-	mov	ecx, 15
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_45:
-	mov	ecx, 16
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_47:
-	mov	ecx, 17
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_49:
-	mov	ecx, 18
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_51:
-	mov	ecx, 19
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_53:
-	mov	ecx, 20
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_55:
-	mov	ecx, 21
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_57:
-	mov	ecx, 22
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_59:
-	mov	ecx, 23
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_61:
-	mov	ecx, 24
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_63:
-	mov	ecx, 25
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_65:
-	mov	ecx, 26
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_67:
-	mov	ecx, 27
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_69:
-	mov	ecx, 28
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_71:
-	mov	ecx, 29
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_73:
-	mov	ecx, 30
-	add	rax, rcx
-	vzeroupper
-	ret
-.LBB0_75:
-	mov	ecx, 31
+.LBB0_2:
+	mov	rax, rdi
+	sub	rax, rcx
+	add	rax, 32
+.LBB0_3:
+	prefetcht0	byte ptr [rax]
+	vpxor	xmm0, xmm0, xmm0
+	vpcmpeqb	ymm1, ymm0, ymmword ptr [rax]
+	vpmovmskb	edx, ymm1
+	test	edx, edx
+	je	.LBB0_6
+# %bb.4:
+	mov	rcx, rax
+	jmp	.LBB0_5
+	.p2align	4, 0x90
+.LBB0_6:                                # =>This Inner Loop Header: Depth=1
+	lea	rcx, [rax + 32]
+	prefetcht0	byte ptr [rax + 32]
+	prefetcht0	byte ptr [rax + 4128]
+	vpcmpeqb	ymm1, ymm0, ymmword ptr [rax + 32]
+	vpmovmskb	edx, ymm1
+	mov	rax, rcx
+	test	edx, edx
+	je	.LBB0_6
+.LBB0_5:
+	sub	rcx, rdi
+	bsf	eax, edx
 	add	rax, rcx
 	vzeroupper
 	ret
@@ -321,6 +55,95 @@ ft_strlen:                              # @ft_strlen
 	.size	ft_strlen, .Lfunc_end0-ft_strlen
 	.cfi_endproc
                                         # -- End function
-	.ident	"Ubuntu clang version 12.0.1-19ubuntu3"
+	.globl	main                            # -- Begin function main
+	.p2align	4, 0x90
+	.type	main,@function
+main:                                   # @main
+	.cfi_startproc
+# %bb.0:
+	push	rax
+	.cfi_def_cfa_offset 16
+	lea	rax, [rip + .L.str]
+	test	al, 31
+	jne	.LBB1_2
+# %bb.1:
+	prefetcht0	byte ptr [rip + .L.str]
+.LBB1_2:
+	lea	rdi, [rip + .L.str.1]
+	mov	esi, 13
+	xor	eax, eax
+	call	printf@PLT
+	lea	rdi, [rip + .L.str.2]
+	mov	esi, 13
+	xor	eax, eax
+	call	printf@PLT
+	lea	rax, [rip + .L.str.3]
+	mov	rcx, rax
+	and	rcx, -32
+	add	rcx, 32
+	test	al, 31
+	mov	rdx, rcx
+	cmove	rdx, rax
+	prefetcht0	byte ptr [rdx]
+	vpxor	xmm0, xmm0, xmm0
+	vpcmpeqb	ymm1, ymm0, ymmword ptr [rdx]
+	vpmovmskb	esi, ymm1
+	test	esi, esi
+	jne	.LBB1_5
+# %bb.3:
+	test	al, 31
+	cmove	rcx, rax
+	.p2align	4, 0x90
+.LBB1_4:                                # =>This Inner Loop Header: Depth=1
+	lea	rdx, [rcx + 32]
+	prefetcht0	byte ptr [rcx + 32]
+	prefetcht0	byte ptr [rcx + 4128]
+	vpcmpeqb	ymm1, ymm0, ymmword ptr [rcx + 32]
+	vpmovmskb	esi, ymm1
+	mov	rcx, rdx
+	test	esi, esi
+	je	.LBB1_4
+.LBB1_5:
+	sub	rdx, rax
+	bsf	esi, esi
+	add	rsi, rdx
+	lea	rdi, [rip + .L.str.1]
+	xor	eax, eax
+	vzeroupper
+	call	printf@PLT
+	lea	rdi, [rip + .L.str.2]
+	mov	esi, 90
+	xor	eax, eax
+	call	printf@PLT
+	xor	eax, eax
+	pop	rcx
+	.cfi_def_cfa_offset 8
+	ret
+.Lfunc_end1:
+	.size	main, .Lfunc_end1-main
+	.cfi_endproc
+                                        # -- End function
+	.type	.L.str,@object                  # @.str
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.L.str:
+	.asciz	"Hello, world!"
+	.size	.L.str, 14
+
+	.type	.L.str.1,@object                # @.str.1
+.L.str.1:
+	.asciz	"ft_strlen: %zu\n"
+	.size	.L.str.1, 16
+
+	.type	.L.str.2,@object                # @.str.2
+.L.str.2:
+	.asciz	"strlen: %zu\n"
+	.size	.L.str.2, 13
+
+	.type	.L.str.3,@object                # @.str.3
+.L.str.3:
+	.asciz	"This is a much longer string that we are using to test the AVX2 optimized strlen function."
+	.size	.L.str.3, 91
+
+	.ident	"Ubuntu clang version 14.0.0-1ubuntu1.1"
 	.section	".note.GNU-stack","",@progbits
 	.addrsig

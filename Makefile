@@ -2,8 +2,8 @@ LIB_NAME = libc_avx.a
 ASM_DIR = asm_out
 SRC_DIR = srcs
 
-CC = clang
-CFLAGS = -O3 -mavx2 -masm=intel -Wall -Wextra -Werror
+CC = clang-14
+CFLAGS = -O3  -mavx2 -masm=intel -mtune=native -Wall -Wextra -Werror
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(SRC:.c=.o)#create a directory of .o files
 

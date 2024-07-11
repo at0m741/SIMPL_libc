@@ -13,21 +13,16 @@ ft_memset:                              # @ft_memset
 	.cfi_def_cfa_offset 24
 	push	r14
 	.cfi_def_cfa_offset 32
-	push	r13
-	.cfi_def_cfa_offset 40
 	push	r12
-	.cfi_def_cfa_offset 48
+	.cfi_def_cfa_offset 40
 	push	rbx
-	.cfi_def_cfa_offset 56
-	push	rax
-	.cfi_def_cfa_offset 64
-	.cfi_offset rbx, -56
-	.cfi_offset r12, -48
-	.cfi_offset r13, -40
+	.cfi_def_cfa_offset 48
+	.cfi_offset rbx, -48
+	.cfi_offset r12, -40
 	.cfi_offset r14, -32
 	.cfi_offset r15, -24
 	.cfi_offset rbp, -16
-	mov	r13, rdx
+	mov	rbx, rdx
 	mov	r12d, esi
 	mov	r14, rdi
 	mov	rax, rdi
@@ -37,8 +32,8 @@ ft_memset:                              # @ft_memset
 # %bb.2:
 	mov	ebp, 32
 	sub	rbp, rax
-	cmp	rbp, r13
-	cmova	rbp, r13
+	cmp	rbp, rbx
+	cmova	rbp, rbx
 	test	rbp, rbp
 	je	.LBB0_4
 # %bb.3:
@@ -48,79 +43,37 @@ ft_memset:                              # @ft_memset
 	call	memset@PLT
 .LBB0_4:
 	lea	rdi, [r14 + rbp]
-	sub	r13, rbp
-	jmp	.LBB0_5
+	sub	rbx, rbp
+	mov	edx, ebx
+	and	edx, 31
+	cmp	rbx, 32
+	jae	.LBB0_6
+	jmp	.LBB0_11
 .LBB0_1:
 	mov	rdi, r14
-.LBB0_5:
-	mov	rax, r13
-	shr	rax, 5
-	mov	edx, r13d
+	mov	edx, ebx
 	and	edx, 31
-	prefetcht0	byte ptr [rdi]
-	test	rax, rax
-	je	.LBB0_18
-# %bb.6:
-	lea	r8, [rax - 1]
-	mov	rsi, r8
-	shr	rsi, 3
-	add	rsi, 1
-	mov	ecx, esi
-	and	ecx, 7
-	cmp	r8, 56
-	jae	.LBB0_8
-# %bb.7:
-	xor	ebp, ebp
-	jmp	.LBB0_10
-.LBB0_8:
-	lea	rbx, [rdi + 1792]
-	and	rsi, -8
-	neg	rsi
-	xor	ebp, ebp
-	.p2align	4, 0x90
-.LBB0_9:                                # =>This Inner Loop Header: Depth=1
-	prefetcht1	byte ptr [rbx - 1792]
-	prefetcht1	byte ptr [rbx - 1536]
-	prefetcht1	byte ptr [rbx - 1280]
-	prefetcht1	byte ptr [rbx - 1024]
-	prefetcht1	byte ptr [rbx - 768]
-	prefetcht1	byte ptr [rbx - 512]
-	prefetcht1	byte ptr [rbx - 256]
-	prefetcht1	byte ptr [rbx]
-	add	rbp, 64
-	add	rbx, 2048
-	add	rsi, 8
-	jne	.LBB0_9
-.LBB0_10:
+	cmp	rbx, 32
+	jb	.LBB0_11
+.LBB0_6:
 	vmovd	xmm0, r12d
-	test	rcx, rcx
-	je	.LBB0_13
-# %bb.11:
-	shl	rbp, 5
-	add	rbp, rdi
-	shl	rcx, 8
-	xor	esi, esi
-	.p2align	4, 0x90
-.LBB0_12:                               # =>This Inner Loop Header: Depth=1
-	prefetcht1	byte ptr [rbp + rsi]
-	add	rsi, 256
-	cmp	rcx, rsi
-	jne	.LBB0_12
-.LBB0_13:
 	vpbroadcastb	ymm0, xmm0
-	mov	esi, eax
-	and	esi, 7
-	cmp	r8, 7
-	jae	.LBB0_21
-# %bb.14:
+	mov	rsi, rbx
+	shr	rsi, 5
+	lea	rcx, [rsi - 1]
+	mov	eax, esi
+	and	eax, 7
+	cmp	rcx, 7
+	jae	.LBB0_14
+# %bb.7:
 	xor	ecx, ecx
-	jmp	.LBB0_15
-.LBB0_21:
-	and	rax, -8
+	jmp	.LBB0_8
+.LBB0_14:
+	and	rsi, -8
 	lea	rbp, [rdi + 224]
 	xor	ecx, ecx
 	.p2align	4, 0x90
-.LBB0_22:                               # =>This Inner Loop Header: Depth=1
+.LBB0_15:                               # =>This Inner Loop Header: Depth=1
 	vmovdqu	ymmword ptr [rbp - 224], ymm0
 	vmovdqu	ymmword ptr [rbp - 192], ymm0
 	vmovdqu	ymmword ptr [rbp - 160], ymm0
@@ -131,40 +84,36 @@ ft_memset:                              # @ft_memset
 	vmovdqu	ymmword ptr [rbp], ymm0
 	add	rcx, 8
 	add	rbp, 256
-	cmp	rax, rcx
-	jne	.LBB0_22
-.LBB0_15:
-	test	rsi, rsi
-	je	.LBB0_18
-# %bb.16:
+	cmp	rsi, rcx
+	jne	.LBB0_15
+.LBB0_8:
+	test	rax, rax
+	je	.LBB0_11
+# %bb.9:
 	shl	rcx, 5
 	add	rcx, rdi
-	shl	rsi, 5
-	xor	eax, eax
+	shl	rax, 5
+	xor	esi, esi
 	.p2align	4, 0x90
-.LBB0_17:                               # =>This Inner Loop Header: Depth=1
-	vmovdqu	ymmword ptr [rcx + rax], ymm0
-	add	rax, 32
-	cmp	rsi, rax
-	jne	.LBB0_17
-.LBB0_18:
+.LBB0_10:                               # =>This Inner Loop Header: Depth=1
+	vmovdqu	ymmword ptr [rcx + rsi], ymm0
+	add	rsi, 32
+	cmp	rax, rsi
+	jne	.LBB0_10
+.LBB0_11:
 	test	rdx, rdx
-	je	.LBB0_20
-# %bb.19:
-	and	r13, -32
-	add	rdi, r13
+	je	.LBB0_13
+# %bb.12:
+	and	rbx, -32
+	add	rdi, rbx
 	mov	esi, r15d
 	vzeroupper
 	call	memset@PLT
-.LBB0_20:
+.LBB0_13:
 	mov	rax, r14
-	add	rsp, 8
-	.cfi_def_cfa_offset 56
 	pop	rbx
-	.cfi_def_cfa_offset 48
-	pop	r12
 	.cfi_def_cfa_offset 40
-	pop	r13
+	pop	r12
 	.cfi_def_cfa_offset 32
 	pop	r14
 	.cfi_def_cfa_offset 24
@@ -178,6 +127,49 @@ ft_memset:                              # @ft_memset
 	.size	ft_memset, .Lfunc_end0-ft_memset
 	.cfi_endproc
                                         # -- End function
-	.ident	"Ubuntu clang version 12.0.1-19ubuntu3"
+	.globl	main                            # -- Begin function main
+	.p2align	4, 0x90
+	.type	main,@function
+main:                                   # @main
+	.cfi_startproc
+# %bb.0:
+	sub	rsp, 216
+	.cfi_def_cfa_offset 224
+	vmovups	ymm0, ymmword ptr [rip + .L__const.main.str2]
+	vmovups	ymmword ptr [rsp + 112], ymm0
+	vmovups	ymm1, ymmword ptr [rip + .L__const.main.str2+64]
+	vmovups	ymmword ptr [rsp + 176], ymm1
+	vmovups	ymm2, ymmword ptr [rip + .L__const.main.str2+32]
+	vmovups	ymmword ptr [rsp + 144], ymm2
+	mov	dword ptr [rsp + 208], 0
+	mov	dword ptr [rsp + 112], 1094795585
+	vmovups	ymmword ptr [rsp], ymm0
+	vmovups	ymmword ptr [rsp + 64], ymm1
+	mov	byte ptr [rsp + 116], 65
+	vmovups	ymmword ptr [rsp + 32], ymm2
+	mov	dword ptr [rsp + 96], 0
+	mov	dword ptr [rsp], 1094795585
+	mov	byte ptr [rsp + 4], 65
+	mov	rdi, rsp
+	vzeroupper
+	call	puts@PLT
+	lea	rdi, [rsp + 112]
+	call	puts@PLT
+	xor	eax, eax
+	add	rsp, 216
+	.cfi_def_cfa_offset 8
+	ret
+.Lfunc_end1:
+	.size	main, .Lfunc_end1-main
+	.cfi_endproc
+                                        # -- End function
+	.type	.L__const.main.str2,@object     # @__const.main.str2
+	.section	.rodata,"a",@progbits
+	.p2align	4
+.L__const.main.str2:
+	.asciz	"Hello, World!\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
+	.size	.L__const.main.str2, 100
+
+	.ident	"Ubuntu clang version 14.0.0-1ubuntu1.1"
 	.section	".note.GNU-stack","",@progbits
 	.addrsig

@@ -24,12 +24,6 @@
 */
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 /**
-    *@brief check if the vector v contains a zero byte
-    *@param v The vector to check
-    *@return int 0 if no zero byte is found, otherwise return a non-zero value
-*/
-static inline int has_zero_byte(__m256i v);
-/**
     *@brief get the length of a string
     *@param s The string to get the length of
     *@return size_t The length of the string
@@ -39,6 +33,8 @@ static inline int has_zero_byte(__m256i v);
     the function will handle the initial bytes separately 
 */
 size_t ft_strlen(const char *s);
+size_t ft_strlen_avx(const char *s);
+size_t ft_strlen_sse(const char *s);
 
 /**
 	*@brief copy n bytes from src to dst
