@@ -36,7 +36,6 @@ void *ft_memcpy(void *dst, const void *src, size_t n)
 		* The function uses prefetching to improve performance.
 	*/
     size_t chunks = n / 256;
-    size_t remaining_bytes = n % 256;
     for (size_t i = 0; i < chunks; i++)
     {
 
