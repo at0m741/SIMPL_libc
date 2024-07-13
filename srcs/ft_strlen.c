@@ -53,15 +53,3 @@ size_t ft_strlen(const char *s)
     return 0;
 }
 
-int main()
-{
-    const char *str = "Hello, world!";
-    printf("ft_strlen: %zu\n", ft_strlen(str));
-    printf("strlen: %zu\n", strlen(str));
-
-    const char *str2 = "This is a much longer string that we are using to test the AVX2 optimized strlen function.";
-    printf("ft_strlen: %zu\n", ft_strlen(str2));
-    printf("strlen: %zu\n", strlen(str2));
-
-    return 0;
-}
