@@ -13,6 +13,38 @@
 #define AVX2_SIZE 32
 #define BLOCK_SIZE 4096
 #define CHAR_PER_VEC (AVX2_SIZE / sizeof(char))
+
+/*
+	* check CPU features
+*/
+
+#define CHECK_FEATURE(name) { #name, __builtin_cpu_supports(#name) }
+typedef struct 
+{
+    const char *name;
+    int supported;
+} cpu_feature_t;
+
+
+int ERMS();
+int get_cpu_info();
+void check_cpu_features();
+
+#if defined(__CLANG__) || defined(__GNUC__)
+    #define __ALIGN(n) __attribute__((aligned(n)))
+    #define __ALIGNED(n) __attribute__((aligned(n)))
+    #define __RESTRICT __restrict__
+    #define __CPU_FEATURES __builtin_cpu_supports
+	#if defined(__GNUC__)
+		#define __builtin_cpu_supports(name) __builtin_cpu_supports(name)
+	#endif
+#elif defined(_MSC_VER)
+	#define __ALIGN(n) __declspec(align(n))
+	#define __ALIGNED(n) __declspec(align(n))
+	#define __RESTRICT __restrict
+	#define __CPU_FEATURES __cpuid
+#endif
+
 /**
     * @brief Compare two strings
     * 
@@ -49,3 +81,21 @@ size_t ft_strlen_sse(const char *s);
 	the function will handle the initial bytes separately 
 */
 void *ft_memcpy(void *dst, const void *src, size_t n);
+
+/**
+	*@brief set n bytes of a memory block to a value
+	*@param b The memory block
+	*@param c The value to set
+	*@param len The number of bytes to set
+	*@return void* The memory block
+	*@note This function is optimized using AVX2 instructions
+	*@note if b is NULL, the function will return NULL
+	*@note if len is 0, the function will return b
+	*@note if the pointer is not aligned on a 32 bytes boundary, 
+	the function will handle the initial bytes separately 
+*/
+
+/* ERM: Enhanced Rep Movsb */
+/* ERM is a feature that allows the REP MOVSB instruction to be faster by using the ERMSB feature. */
+void *ft_memset_ERMS(void *b, int c, size_t len);
+void *ft_memset(void *b, int c, size_t len);

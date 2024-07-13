@@ -68,3 +68,66 @@ inline void *ft_memset(void *b, int c, size_t len)
     return b;
 }
 
+
+	/*
+	* The function checks if the Enhanced REP MOVSB/STOSB feature is supported by the CPU.
+	* The function returns 1 if the feature is supported, otherwise it returns 0.
+	*/
+
+	/*
+		* The cpuid instruction is used to get information about the CPU.
+		* The function uses the cpuid instruction with the EAX register set to 7 and the ECX register set to 0.
+		* The function checks if the Enhanced REP MOVSB/STOSB feature is supported by checking the ninth bit of the ECX register.
+		* The function returns 1 if the feature is supported, otherwise it returns 0.
+	*/
+
+	/*
+	* registers explanation:
+	* EAX: The EAX register is used to specify the CPU feature to query.
+	* EBX: The EBX register is used to store the second part of the CPU feature information.
+	* ECX: The ECX register is used to specify the sub-feature to query.
+		* EDX: The EDX register is used to store the first part of the CPU feature information.
+	* The function uses the cpuid instruction to get information about the CPU.
+	* The function sets the EAX register to 7 and the ECX register to 0.
+	* The function uses the cpuid instruction to get the CPU feature information.
+	* The function checks if the ninth bit of the ECX register is set.	
+	* The function returns 1 if the ninth bit of the ECX register is set, otherwise it returns 0.
+	*/
+int ERMS()
+{
+	uint32_t eax, ebx, ecx, edx;
+	eax = 7;
+	ecx = 0;
+
+	__asm__ __volatile__(
+		"cpuid"
+		: "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+		: "a"(eax), "c"(ecx)
+	);
+	return (ecx & (1 << 9)) != 0;
+}
+
+
+/*
+	* explanation:
+* MOVSB copies a byte from the memory location pointed by the DS:SI registers to the memory location pointed by the ES:DI registers.
+* REP repeats the MOVSB instruction CX times.
+* The function uses the REP STOSB instruction to set the memory pointed by b to the value c.
+* The function uses the Enhanced REP MOVSB/STOSB feature if it is supported by the CPU.
+* The function uses the regular memset function if the Enhanced REP MOVSB/STOSB feature is not supported by the CPU.
+* The function returns the pointer to the memory block.
+*/
+void *ft_memset_ERMS(void *b, int c, size_t len) {
+    unsigned char *ptr = (unsigned char *)b;
+    unsigned char value = (unsigned char)c;
+
+    __asm__ __volatile__(
+        "rep stosb"
+        : "=D"(ptr), "=c"(len)
+        : "0"(ptr), "1"(len), "a"(value)
+        : "memory");
+
+    return b;
+}
+
+
