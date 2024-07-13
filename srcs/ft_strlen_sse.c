@@ -14,15 +14,17 @@
 
 inline size_t strlen_sse(const char *s)
 {
-	const char *ptr = s;
-	__m128i zero = _mm_setzero_si128();
+	if (__builtin_expect(s == NULL, 0))
+		return 0;
 	
+	const char		*ptr = s;
+	__m128i			zero = _mm_setzero_si128();
+	size_t			misalignment = (size_t)s & 15;
 	/*
 		* If the pointer is not aligned on a 16 bytes boundary, 
 		* the function handles the initial bytes separately.
 		* It loads 16 bytes from the memory pointed by ptr and checks if there is a zero byte in the chunk.
 	*/
-	size_t misalignment = (size_t)s & 15;
 	if (misalignment)
 	{
 		__m128i data = _mm_loadu_si128((const __m128i *)s);
@@ -41,15 +43,12 @@ inline size_t strlen_sse(const char *s)
 		* This hint is useful when the data is accessed sequentially.
 	*/
 	_mm_prefetch(s + 16, _MM_HINT_NTA);
-
 	while (1)
 	{
 		_mm_prefetch(s + 32, _MM_HINT_NTA);
-
 		__m128i data = _mm_loadu_si128((const __m128i *)s);
 		__m128i cmp = _mm_cmpeq_epi8(data, zero);
 		uint32_t mask = _mm_movemask_epi8(cmp);
-
 		if (mask)
 			return (s - ptr) + __builtin_ctz(mask);
 		s += 16;

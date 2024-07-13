@@ -16,9 +16,12 @@
 */
 inline size_t strlen_avx(const char *s)
 {
-    const char *ptr = s;
-    __m256i zero = _mm256_setzero_si256();
-	uintptr_t missalignement = (uintptr_t)s & 31;
+	if (__builtin_expect(s == NULL, 0))
+		return 0;
+    
+	const char		*ptr = s;
+    __m256i			zero = _mm256_setzero_si256();
+	uintptr_t		missalignement = (uintptr_t)s & 31;
 	/*
 		* If the pointer is not aligned on a 32 bytes boundary, the function handles the initial bytes separately. 
 		* It loads 32 bytes from the memory pointed by ptr and checks if there is a zero byte in the chunk.
@@ -35,15 +38,13 @@ inline size_t strlen_avx(const char *s)
 			return (s - ptr) + __builtin_ctz(mask);
 		s += 32 - missalignement;
 	}
-	
 	/*
 		* Prefetch the next 64 bytes to improve performance.
 		* The _MM_HINT_NTA hint is used to indicate that the data is not accessed again soon.
 		* This hint is useful when the data is not accessed sequentially.
 		* The _MM_HINT_T0 hint is used to indicate that the data is accessed soon.
 		* This hint is useful when the data is accessed sequentially.
-	* */
-
+	*/
 	_mm_prefetch(s + 64, _MM_HINT_NTA);
     while (1)
     {

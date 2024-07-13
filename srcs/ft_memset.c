@@ -13,11 +13,15 @@
 
 inline void *ft_memset(void *b, int c, size_t len) 
 {
-    unsigned char *ptr = (unsigned char *)b;
-    unsigned char value = (unsigned char)c;
-    __m256i v = _mm256_set1_epi8(value);
+	if (__builtin_expect(b == NULL, 0) || len == 0)
+		return b;
+  
+	unsigned char	*ptr = (unsigned char *)b;
+    unsigned char	value = (unsigned char)c;
+    __m256i			v = _mm256_set1_epi8(value);
+    size_t			offset = (uintptr_t)ptr & (VEC_SIZE - 1);
+	
 	_mm_prefetch(ptr, _MM_HINT_NTA);
-    size_t offset = (uintptr_t)ptr & (VEC_SIZE - 1);
     if (offset) 
     {
         size_t align_size = VEC_SIZE - offset;
@@ -40,8 +44,8 @@ inline void *ft_memset(void *b, int c, size_t len)
 		* The function sets the memory to the value c 32 bytes at a time.
 	*/
 
-    size_t chunks = len / VEC_SIZE;
-    size_t remainings = len % VEC_SIZE;
+    size_t		chunks = len / VEC_SIZE;
+    size_t		remainings = len % VEC_SIZE;
 
 	/*
 		* Prefetch the next 64 bytes to improve performance.
@@ -91,7 +95,7 @@ inline void *ft_memset(void *b, int c, size_t len)
 	*/
 int ERMS()
 {
-	uint32_t eax, ebx, ecx, edx;
+	uint32_t	eax, ebx, ecx, edx;
 	eax = 7;
 	ecx = 0;
 
@@ -113,9 +117,10 @@ int ERMS()
 * The function uses the regular memset function if the Enhanced REP MOVSB/STOSB feature is not supported by the CPU.
 * The function returns the pointer to the memory block.
 */
-void *ft_memset_ERMS(void *b, int c, size_t len) {
-    unsigned char *ptr = (unsigned char *)b;
-    unsigned char value = (unsigned char)c;
+void *ft_memset_ERMS(void *b, int c, size_t len) 
+{
+    unsigned char	*ptr = (unsigned char *)b;
+    unsigned char	value = (unsigned char)c;
 
     __asm__ __volatile__(
         "rep stosb"

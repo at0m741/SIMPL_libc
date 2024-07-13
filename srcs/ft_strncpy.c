@@ -13,10 +13,10 @@
 
 char *ft_strncpy(char *dst, const char *src, size_t n)
 {
-    char		*ptr = dst; 
-	size_t		chunks = n / VEC_SIZE;
-	size_t		remaining_bytes = n & 31;
-	uintptr_t	align = (uintptr_t)src & 31;
+    char			*ptr = dst; 
+	size_t			chunks = n / VEC_SIZE;
+	size_t			remaining_bytes = n & 31;
+	uintptr_t		align = (uintptr_t)src & 31;
 
 
     if (align != 0)
@@ -34,8 +34,8 @@ char *ft_strncpy(char *dst, const char *src, size_t n)
         n -= initial_bytes;
     }
 
-    const __m256i *vec_src = (const __m256i *)src;
-	__m256i zero = _mm256_setzero_si256();
+    const __m256i		*vec_src = (const __m256i *)src;
+	__m256i				zero = _mm256_setzero_si256();
 	_mm_prefetch(vec_src + chunks * VEC_SIZE, _MM_HINT_NTA);
     for (size_t i = 0; i < chunks; i++)
     {

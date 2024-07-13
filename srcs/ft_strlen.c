@@ -14,15 +14,14 @@
 __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 */
 
-#define VEC_SIZE 32
-#define BLOCK_SIZE 4096
 
 size_t ft_strlen(const char *s) 
 {
-    const char *ptr = s;
-    const __m256i zero = _mm256_setzero_si256();
-    size_t offset = (uintptr_t)ptr & (VEC_SIZE - 1);
-    if (offset != 0) 
+    const char		*ptr = s;
+    const __m256i	zero = _mm256_setzero_si256();
+    size_t			offset = (uintptr_t)ptr & (VEC_SIZE - 1);
+    
+	if (offset != 0) 
     {
         size_t align_size = VEC_SIZE - offset;
         __m256i data = _mm256_loadu_si256((const __m256i *)ptr);

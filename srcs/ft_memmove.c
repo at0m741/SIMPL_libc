@@ -2,6 +2,8 @@
 
 void *ft_memmove(void *dest, const void *src, size_t n)
 {
+	if (__builtin_expect(dest == NULL || src == NULL, 0))
+		return (NULL);
     const char *srcp = (const char *)src;
     char *destp = (char *)dest;
     
@@ -25,7 +27,9 @@ void *ft_memmove(void *dest, const void *src, size_t n)
         }
         while (n--)
             *destp++ = *srcp++;
-    }else{
+    }
+	else
+	{
         srcp += n;
         destp += n;
         
