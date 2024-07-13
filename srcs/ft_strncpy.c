@@ -36,7 +36,7 @@ char *ft_strncpy(char *dst, const char *src, size_t n)
     {
         __m256i chunk = _mm256_loadu_si256(vec_src + i);
         _mm256_storeu_si256((__m256i *)dst, chunk);
-        dst += 32;
+        dst += VEC_SIZE;
     }
     if (remaining_bytes)
     {
