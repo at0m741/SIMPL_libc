@@ -21,34 +21,39 @@ char *ft_strncpy(char *dst, const char *src, size_t n)
 
     if (align != 0)
     {
-        size_t	initial_bytes = VEC_SIZE - align;
+        size_t initial_bytes = VEC_SIZE - align;
         if (initial_bytes > n)
             initial_bytes = n;
         for (size_t i = 0; i < initial_bytes; i++)
+        {
             *dst++ = *src++;
+            _mm_prefetch(src + initial_bytes, _MM_HINT_NTA);
+            _mm_prefetch(dst + initial_bytes, _MM_HINT_NTA);
+
+        }
         n -= initial_bytes;
     }
 
     const __m256i *vec_src = (const __m256i *)src;
 	__m256i zero = _mm256_setzero_si256();
-	_mm_prefetch(src + chunks * VEC_SIZE, _MM_HINT_NTA);
+	_mm_prefetch(vec_src + chunks * VEC_SIZE, _MM_HINT_NTA);
     for (size_t i = 0; i < chunks; i++)
     {
         __m256i chunk = _mm256_loadu_si256(vec_src + i);
         _mm256_storeu_si256((__m256i *)dst, chunk);
-        dst += VEC_SIZE;
+        dst += 32;
     }
     if (remaining_bytes)
     {
         __m256i chunk = _mm256_loadu_si256(vec_src + chunks);
         __m256i mask = _mm256_cmpgt_epi8(_mm256_set1_epi8(remaining_bytes),
-            _mm256_setr_epi8(31, 30, 29, 28, 27, 26, 25, 24,\
-							 23, 22, 21, 20, 19, 18, 17, 16,\
-							 15, 14, 13, 12, 11, 10, 9, 8,\
-							 7, 6, 5, 4, 3, 2, 1, 0));
+        _mm256_setr_epi8(31, 30, 29, 28, 27, 26, 25, 24,\
+					     23, 22, 21, 20, 19, 18, 17, 16,\
+						 15, 14, 13, 12, 11, 10, 9, 8,\
+						 7, 6, 5, 4, 3, 2, 1, 0));
         chunk = _mm256_blendv_epi8(chunk, zero, mask);
         _mm256_storeu_si256((__m256i *)dst, chunk);
-    }
+	}
 
     return ptr;
 }
