@@ -1,8 +1,4 @@
 #include "../libft.h"
-
-#define VEC_SIZE 32
-#define BLOCK_SIZE 4096
-
 /*
 	* this implementation of the memset function uses AVX2 
 *	* instructions to set the memory pointed by b to the value c 

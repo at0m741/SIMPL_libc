@@ -13,7 +13,7 @@
 #define AVX2_SIZE 32
 #define BLOCK_SIZE 4096
 #define CHAR_PER_VEC (AVX2_SIZE / sizeof(char))
-
+#define VEC_SIZE 32
 /*
 	* check CPU features
 */
@@ -44,7 +44,6 @@ void check_cpu_features();
 	#define __RESTRICT __restrict
 	#define __CPU_FEATURES __cpuid
 #endif
-
 /**
     * @brief Compare two strings
     * 

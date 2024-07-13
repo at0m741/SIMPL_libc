@@ -1,7 +1,5 @@
 #include "../libft.h"
 
-
-
 void get_cpu_features(cpu_feature_t features[], size_t size) {
     cpu_feature_t temp[] = {
         CHECK_FEATURE(mmx),

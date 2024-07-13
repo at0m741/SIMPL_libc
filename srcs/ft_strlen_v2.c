@@ -1,19 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strlen_v2.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ltouzali <ltouzali@42angouleme.fr>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 17:20:48 by ltouzali          #+#    #+#             */
-/*   Updated: 2024/07/11 18:29:40 by babonnet         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <immintrin.h>
-#include <stddef.h>
-#include <stdint.h>
-
+#include "../libft.h"
 /*
  *  this is the second implementation of the strlen function using AVX2 instructions
  *  less instruction, less cache misses, less branch mispredictions
