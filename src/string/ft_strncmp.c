@@ -1,5 +1,3 @@
-#include "../libft.h"
-
 /*
 	* This implementation is based on the assumption that the strings are not equal
 * and that n is not 0.
@@ -12,6 +10,11 @@
 	* If the function reaches the end of the strings, it returns 0.
 	* The function is optimized for large strings and strings with a length multiple of 32.
 */
+
+#include <immintrin.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 int ft_strncmp(const char *s1, const char *s2, size_t n)
 {	
 	if (__builtin_expect(n == 0, 0) || __builtin_expect(s1 == s2, 0))

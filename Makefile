@@ -1,13 +1,17 @@
 LIB_NAME = libc_avx.a
 SO_NAME = libc_avx.so
 ASM_DIR = asm_out
-SRC_DIR = srcs
+SRC_DIR = src
+INCLUDE_DIR = include
 OBJ_DIR = obj
 
 CC = clang
 CFLAGS = -O3 -mavx2 -masm=intel -mtune=native -Wall -Wextra -Werror
-SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC = $(shell find $(SRC_DIR) -name '*.c')
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+
+INCLUDE = -I $(INCLUDE_DIR)
+INCLUDE += -I $(SRC_DIR)/config
 
 ifeq ($(VERBOSE), true)
 	CFLAGS += -D VERBOSE
@@ -15,19 +19,20 @@ endif
 
 asm: $(SRC)
 	@mkdir -p $(ASM_DIR)
-	@$(foreach src, $(SRC), $(CC) $(CFLAGS) -S -o $(ASM_DIR)/$(notdir $(src:.c=.s)) $(src);)
+	@$(foreach src, $(SRC), \
+		$(CC) $(CFLAGS) -S -o $(ASM_DIR)/$(notdir $(src:.c=.s)) $(src);)
 
 so: $(SRC)
-	$(CC) $(CFLAGS) -fPIC -shared -o $(SO_NAME) $(SRC)
+	$(CC) $(CFLAGS) $(INCLUDE) -fPIC -shared -o $(SO_NAME) $(SRC)
 
 all: $(LIB_NAME)
 
 $(LIB_NAME): $(OBJ)
-	ar rcs $(LIB_NAME) $(OBJ)
+	ar rcs $(LIB_NAME) $(INCLUDE) $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	rm -f $(OBJ_DIR)/*.o
@@ -39,5 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re asm
-
+.PHONY: all clean fclean re asm so

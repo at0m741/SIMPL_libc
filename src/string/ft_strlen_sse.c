@@ -1,5 +1,3 @@
-#include "../libft.h"
-
 /*
  *  this implementation of the strlen function using SSE instructions
  *  less instruction, less cache misses, less branch mispredictions
@@ -11,6 +9,9 @@
  *  If there is no zero byte, it increments the pointer by 16 bytes and repeats the process.
 */
 
+#include <immintrin.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 inline size_t ft_strlen_sse(const char *s)
 {

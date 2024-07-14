@@ -1,4 +1,3 @@
-#include "../libft.h"
 
 /*
  * This implementation is based on the assumption that the string is not empty.
@@ -10,6 +9,12 @@
  * If the function reaches the end of the string, it returns NULL.
  * The function is optimized for large strings and strings with a length multiple of 32.
 */
+
+#include <stdint.h>
+#include <immintrin.h>
+#include <stdlib.h>
+#include <config.h>
+
 
 char *ft_strchr(const char *p, int ch)
 {

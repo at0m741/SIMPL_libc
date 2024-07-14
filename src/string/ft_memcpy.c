@@ -1,4 +1,6 @@
-#include "../libft.h"
+#include <stdint.h>
+#include <immintrin.h>
+#include <stdlib.h>
 
 /*
  *  this implementation of the memcpy function using AVX2 instructions

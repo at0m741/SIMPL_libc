@@ -1,4 +1,3 @@
-#include "../libft.h"
 /*
  *  this is the second implementation of the strlen function using AVX2 instructions
  *  less instruction, less cache misses, less branch mispredictions
@@ -14,6 +13,11 @@
  *  The function also handles the initial bytes separately if the pointer is not aligned on a 32 bytes boundary.
  *  The function uses prefetching to improve performance.
 */
+
+#include <immintrin.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 inline size_t ft_strlen_avx(const char *s)
 {
 	if (__builtin_expect(s == NULL, 0))

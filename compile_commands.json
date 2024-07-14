@@ -1,0 +1,405 @@
+[
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/cpuid_conf.s",
+   "src/config/cpuid_conf.c"
+  ],
+  "file": "src/config/cpuid_conf.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_fabsi.s",
+   "src/maths/ft_fabsi.c"
+  ],
+  "file": "src/maths/ft_fabsi.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_fabsf.s",
+   "src/maths/ft_fabsf.c"
+  ],
+  "file": "src/maths/ft_fabsf.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_sinf.s",
+   "src/maths/ft_sinf.c"
+  ],
+  "file": "src/maths/ft_sinf.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_abs.s",
+   "src/maths/ft_abs.c"
+  ],
+  "file": "src/maths/ft_abs.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_atoi.s",
+   "src/maths/ft_atoi.c"
+  ],
+  "file": "src/maths/ft_atoi.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_cosf.s",
+   "src/maths/ft_cosf.c"
+  ],
+  "file": "src/maths/ft_cosf.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_fabs.s",
+   "src/maths/ft_fabs.c"
+  ],
+  "file": "src/maths/ft_fabs.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_sqrt.s",
+   "src/maths/ft_sqrt.c"
+  ],
+  "file": "src/maths/ft_sqrt.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strchr.s",
+   "src/string/ft_strchr.c"
+  ],
+  "file": "src/string/ft_strchr.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_memchr.s",
+   "src/string/ft_memchr.c"
+  ],
+  "file": "src/string/ft_memchr.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strlen_sse.s",
+   "src/string/ft_strlen_sse.c"
+  ],
+  "file": "src/string/ft_strlen_sse.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strncpy.s",
+   "src/string/ft_strncpy.c"
+  ],
+  "file": "src/string/ft_strncpy.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strdup.s",
+   "src/string/ft_strdup.c"
+  ],
+  "file": "src/string/ft_strdup.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_memcpy.s",
+   "src/string/ft_memcpy.c"
+  ],
+  "file": "src/string/ft_memcpy.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strlen.s",
+   "src/string/ft_strlen.c"
+  ],
+  "file": "src/string/ft_strlen.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_memset.s",
+   "src/string/ft_memset.c"
+  ],
+  "file": "src/string/ft_memset.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_memcmp.s",
+   "src/string/ft_memcmp.c"
+  ],
+  "file": "src/string/ft_memcmp.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_strncmp.s",
+   "src/string/ft_strncmp.c"
+  ],
+  "file": "src/string/ft_strncmp.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-S",
+   "-o",
+   "asm_out/ft_memmove.s",
+   "src/string/ft_memmove.c"
+  ],
+  "file": "src/string/ft_memmove.c"
+ },
+ {
+  "directory": "/nfs/homes/babonnet/Documents/avx2_libc",
+  "arguments": [
+   "clang",
+   "-O3",
+   "-mavx2",
+   "-masm=intel",
+   "-mtune=native",
+   "-Wall",
+   "-Wextra",
+   "-Werror",
+   "-I",
+   "include",
+   "-I",
+   "src/config",
+   "-fPIC",
+   "-shared",
+   "-o",
+   "libc_avx.so",
+   "src/config/cpuid_conf.c",
+   "src/maths/ft_fabsi.c",
+   "src/maths/ft_fabsf.c",
+   "src/maths/ft_sinf.c",
+   "src/maths/ft_abs.c",
+   "src/maths/ft_atoi.c",
+   "src/maths/ft_cosf.c",
+   "src/maths/ft_fabs.c",
+   "src/maths/ft_sqrt.c",
+   "src/string/ft_strchr.c",
+   "src/string/ft_memchr.c",
+   "src/string/ft_strlen_sse.c",
+   "src/string/ft_strncpy.c",
+   "src/string/ft_strdup.c",
+   "src/string/ft_memcpy.c",
+   "src/string/ft_strlen.c",
+   "src/string/ft_memset.c",
+   "src/string/ft_memcmp.c",
+   "src/string/ft_strncmp.c",
+   "src/string/ft_memmove.c",
+   "src/string/ft_strlen_v2.c"
+  ],
+  "file": "src/string/ft_strlen_v2.c"
+ }
+]

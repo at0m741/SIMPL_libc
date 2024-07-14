@@ -1,5 +1,3 @@
-#include "../libft.h"
-#include "ifunc_selector.h"
 
 /* check if the vector v contains a zero byte */
 /* return 0 if no zero byte is found, otherwise return a non-zero value */
@@ -15,6 +13,9 @@
 __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 */
 
+#include <immintrin.h>
+#include <stdlib.h>
+#include <config.h>
 
 size_t ft_strlen_AVX(const char *s) 
 {

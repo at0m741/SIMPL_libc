@@ -1,5 +1,3 @@
-#include "../libft.h"
-
 /*
 * an optimized implementation of the strncpy function using AVX2 instructions
 * less instruction, less cache misses, less branch mispredictions
@@ -10,6 +8,11 @@
 * If the function reaches the end of the strings, it pads the remaining bytes with zeros.
 * The function is optimized for large strings and strings with a length multiple of 32.
 */
+
+#include <immintrin.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <config.h>
 
 char *ft_strncpy(char *dst, const char *src, size_t n)
 {

@@ -1,4 +1,3 @@
-#include "../libft.h"
 /*
 	* this implementation of the memset function uses AVX2 
 *	* instructions to set the memory pointed by b to the value c 
@@ -10,6 +9,11 @@
 *	* The function handles the initial bytes separately if the pointer is not aligned on a 32 bytes boundary.
 *	* The function uses prefetching to improve performance.
 */
+
+#include <stdint.h>
+#include <immintrin.h>
+#include <stdlib.h>
+#include <config.h>
 
 inline void *ft_memset(void *b, int c, size_t len) 
 {
