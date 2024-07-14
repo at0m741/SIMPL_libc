@@ -14,7 +14,7 @@
  *  The function also handles the initial bytes separately if the pointer is not aligned on a 32 bytes boundary.
  *  The function uses prefetching to improve performance.
 */
-inline size_t strlen_avx(const char *s)
+inline size_t ft_strlen_avx(const char *s)
 {
 	if (__builtin_expect(s == NULL, 0))
 		return 0;

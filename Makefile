@@ -14,7 +14,7 @@ asm: $(SRC)
 	@$(foreach src, $(SRC), $(CC) $(CFLAGS) -S -o $(ASM_DIR)/$(notdir $(src:.c=.s)) $(src);)
 
 so: $(SRC)
-	$(CC) $(CFLAGS) -shared -o $(SO_NAME) $(SRC)
+	$(CC) $(CFLAGS) -fPIC -shared -o $(SO_NAME) $(SRC)
 
 all: $(LIB_NAME)
 

@@ -55,3 +55,43 @@ void *ft_memmove(void *dest, const void *src, size_t n)
     return dest;
 }
 
+
+void *ft_memmove_ERMS(void *dest, const void *src, size_t n) 
+{
+    void *ret = dest;
+
+    if (dest < src) 
+	{
+        size_t prefetch_distance = 64;
+
+        for (size_t i = 0; i < n; i += prefetch_distance)
+			_mm_prefetch((const char*)src + i, _MM_HINT_T0);
+
+        __asm__ volatile (
+            "rep movsb"
+            : "+D" (dest), "+S" (src), "+c" (n)
+            :
+            : "memory"
+        );
+    }
+	else if (dest > src)
+	{
+        dest = (char*)dest + n - 1;
+        src = (const char*)src + n - 1;
+		size_t prefetch_distance = 64;
+
+		for (size_t i = 0; i < n; i += prefetch_distance)
+			_mm_prefetch((const char*)src - i, _MM_HINT_T0);
+
+        __asm__ volatile (
+            "std\n"
+            "rep movsb\n"
+            "cld"
+            : "+D" (dest), "+S" (src), "+c" (n)
+            :
+            : "memory"
+        );
+    }
+
+    return ret;
+}

@@ -5,7 +5,7 @@
  *  less instruction, less cache misses, less branch mispredictions
 */
 
-void *ft_memcpy(void *dst, const void *src, size_t n)
+inline void *ft_memcpy(void *dst, const void *src, size_t n)
 {
 	if (__builtin_expect(dst == NULL || src == NULL, 0))
 		return (NULL);
@@ -56,4 +56,23 @@ void *ft_memcpy(void *dst, const void *src, size_t n)
     }
 
     return dst;
+}
+
+
+void *ft_memcpy_ERMS(void *dest, const void *src, size_t n) 
+{
+    void		*ret = dest;
+    size_t		prefetch_distance = 64;
+
+    for (size_t i = 0; i < n; i += prefetch_distance) 
+		_mm_prefetch((const char*)src + i + prefetch_distance, _MM_HINT_T0);
+
+    __asm__ volatile (
+        "rep movsb"
+        : "+D" (dest), "+S" (src), "+c" (n)
+        : 
+        : "memory"
+    );
+
+    return ret;
 }

@@ -37,16 +37,13 @@ inline void *ft_memset(void *b, int c, size_t len)
 		_mm_prefetch(ptr, _MM_HINT_NTA);
 		_mm_prefetch(ptr + VEC_SIZE, _MM_HINT_NTA);
 	}
-
 	/*
 		* chunks is the number of 32 bytes chunks in the memory block.
 		* remainings is the number of bytes that are not part of a 32 bytes chunk.
 		* The function sets the memory to the value c 32 bytes at a time.
 	*/
-
     size_t		chunks = len / VEC_SIZE;
     size_t		remainings = len % VEC_SIZE;
-
 	/*
 		* Prefetch the next 64 bytes to improve performance.
 		* The _MM_HINT_NTA hint is used to indicate that the data is not accessed again soon.
@@ -122,6 +119,10 @@ void *ft_memset_ERMS(void *b, int c, size_t len)
     unsigned char	*ptr = (unsigned char *)b;
     unsigned char	value = (unsigned char)c;
 
+	size_t prefetch_distance = 64;
+	for (size_t i = 0; i < len; i += prefetch_distance) {
+		__builtin_prefetch((const char*)ptr + i);
+	}
     __asm__ __volatile__(
         "rep stosb"
         : "=D"(ptr), "=c"(len)

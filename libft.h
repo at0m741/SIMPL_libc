@@ -80,7 +80,7 @@ size_t ft_strlen_sse(const char *s);
 	the function will handle the initial bytes separately 
 */
 void *ft_memcpy(void *dst, const void *src, size_t n);
-
+void *ft_memcpy_ERMS(void *dest, const void *src, size_t n); 
 /**
 	*@brief set n bytes of a memory block to a value
 	*@param b The memory block
@@ -98,3 +98,15 @@ void *ft_memcpy(void *dst, const void *src, size_t n);
 /* ERM is a feature that allows the REP MOVSB instruction to be faster by using the ERMSB feature. */
 void *ft_memset_ERMS(void *b, int c, size_t len);
 void *ft_memset(void *b, int c, size_t len);
+
+/**
+	* @brief memmove copies n bytes from src to dest
+	* @param dest The destination buffer
+	* @param src The source buffer
+	* @param n The number of bytes to copy
+	* @return void* The destination buffer
+	* @note This function is optimized using ERMS instructions
+	* @note if dest or src is NULL, the function will return NULL
+ */
+void *ft_memmove_ERMS(void *dest, const void *src, size_t n); 
+
