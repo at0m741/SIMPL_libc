@@ -66,6 +66,7 @@ int ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t ft_strlen(const char *s);
 size_t ft_strlen_avx(const char *s);
 size_t ft_strlen_sse(const char *s);
+size_t strlen_sse(const char *s);
 
 /**
 	*@brief copy n bytes from src to dst
@@ -108,5 +109,6 @@ void *ft_memset(void *b, int c, size_t len);
 	* @note This function is optimized using ERMS instructions
 	* @note if dest or src is NULL, the function will return NULL
  */
-void *ft_memmove_ERMS(void *dest, const void *src, size_t n); 
-
+void *ft_memmove_ERMS(void *dest, const void *src, size_t n);
+void *ft_memmove(void *dest, const void *src, size_t n);
+void *ft_memmove_ERMS_AVX2(void *dest, const void *src, size_t n);

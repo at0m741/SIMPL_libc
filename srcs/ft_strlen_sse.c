@@ -12,7 +12,7 @@
 */
 
 
-inline size_t strlen_sse(const char *s)
+inline size_t ft_strlen_sse(const char *s)
 {
 	if (__builtin_expect(s == NULL, 0))
 		return 0;
