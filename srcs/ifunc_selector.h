@@ -1,5 +1,5 @@
 #ifndef __IFUNC_SELECTOR_H__
-#define __IFUNC_SELECTOR_H__
+# define __IFUNC_SELECTOR_H__
 
 #include "cpuid_conf.h"
 
@@ -11,14 +11,14 @@ enum ifunc_type_u {
 };
 
 #ifdef VERBOSE
-#define IFUNC_LOG(func) printf("ifunc %s is selected\n", #func);
+# define IFUNC_LOG(func) printf("ifunc %s is selected\n", #func);
 #else
-#define IFUNC_LOG(func)
+# define IFUNC_LOG(func)
 #endif
 
 #define _func_selected(func)                                                   \
-    IFUNC_LOG(func)                                                            \
-    return func;                                                               \
+  IFUNC_LOG(func)                                                              \
+  return func;
 
 #define __ifunc_create_prototype(name, type_name, ...)                         \
   type_name name##_ERMS(__VA_ARGS__);                                          \

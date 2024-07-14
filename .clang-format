@@ -1,0 +1,16 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 80
+AlignConsecutiveDeclarations: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 4
+BreakConstructorInitializersBeforeComma: false
+BreakConstructorInitializers: BeforeColon
+AllowAllConstructorInitializersOnNextLine: false
+
+# Define directive settings
+IndentPPDirectives: AfterHash
+
+# Comment settings
+CommentPragmas: '^ IWYU pragma:'
+IndentPragmas: true
