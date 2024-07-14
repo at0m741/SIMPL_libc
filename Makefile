@@ -32,6 +32,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	rm -f $(OBJ_DIR)/*.o
 	rm -rf $(ASM_DIR)
+	rm -f $(SO_NAME)
 
 fclean: clean
 	rm -f $(LIB_NAME)

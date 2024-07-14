@@ -27,7 +27,7 @@ enum ifunc_type_u {
   type_name name##_BASE(__VA_ARGS__);
 
 #define __ifunc_creator(name, type_name, version, ...)                         \
-  type_name (*name##_ifunc())(__VA_ARGS__) {                                   \
+	type_name (*name##_ifunc())(__VA_ARGS__) {                                 \
     if ((version & IFUNC_ERMS) && simd_support.erms) {                         \
       _func_selected(name##_ERMS)                                              \
     }                                                                          \
