@@ -1,21 +1,22 @@
 #include "../libft.h"
+#include "ifunc_selector.h"
 
 /* check if the vector v contains a zero byte */
 /* return 0 if no zero byte is found, otherwise return a non-zero value */
 
 /*
-** tryin to benchmark Glibc.... but skill issue atm
+** trying to benchmark Glibc.... but skill issue atm
 
-* usin _mm256_setzero_si256() to create a vector of 32 zero bytes bc assingning a 0 is to lower (yes I know it's a bit overkill)
-* usin _mm256_loadu_si256() to load 32 bytes from the memory pointed by ptr in asm :
+* using _mm256_setzero_si256() to create a vector of 32 zero bytes bc assingning a 0 is to lower (yes I know it's a bit overkill)
+* using _mm256_loadu_si256() to load 32 bytes from the memory pointed by ptr in asm :
 *                      vpcmpeqb ymm1, ymm0, ymmword ptr [rsi + rcx + 32]
 
-* usin has_zero_byte() to check if the vector v contains a zero byte
+* using has_zero_byte() to check if the vector v contains a zero byte
 __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 */
 
 
-size_t ft_strlen(const char *s) 
+size_t ft_strlen_AVX(const char *s) 
 {
     const char		*ptr = s;
     const __m256i	zero = _mm256_setzero_si256();
@@ -52,3 +53,15 @@ size_t ft_strlen(const char *s)
     return 0;
 }
 
+
+size_t ft_strlen_BASE(const char *s) 
+{
+	const char *endptr;
+
+	endptr = s;
+	while (*endptr)
+		endptr++;
+	return (endptr - s);
+}
+
+libft_ifunc_init(ft_strlen, size_t, IFUNC_AVX, const char *);

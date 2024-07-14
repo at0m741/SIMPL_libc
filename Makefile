@@ -9,6 +9,10 @@ CFLAGS = -O3 -mavx2 -masm=intel -mtune=native -Wall -Wextra -Werror
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
+ifeq ($(VERBOSE), true)
+	CFLAGS += -D VERBOSE
+endif
+
 asm: $(SRC)
 	@mkdir -p $(ASM_DIR)
 	@$(foreach src, $(SRC), $(CC) $(CFLAGS) -S -o $(ASM_DIR)/$(notdir $(src:.c=.s)) $(src);)
