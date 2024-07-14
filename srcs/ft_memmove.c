@@ -60,9 +60,28 @@ void *ft_memmove_ERMS(void *dest, const void *src, size_t n)
 {
     void *ret = dest;
 
+	if (__builtin_expect(dest == NULL || src == NULL, 0))
+		return (NULL);
+
+	if (n == 32)
+	{
+		_mm_prefetch((const char*)src + 32, _MM_HINT_T0);
+		__m256i data = _mm256_loadu_si256((__m256i*)src);
+		_mm256_storeu_si256((__m256i*)dest, data);
+		return dest;
+	}
+	else if (n == 64)
+	{
+		_mm_prefetch((const char*)src + 64, _MM_HINT_T0);
+		__m256i data0 = _mm256_loadu_si256((__m256i*)src);
+		__m256i data1 = _mm256_loadu_si256((__m256i*)((char*)src + 32));
+		_mm256_storeu_si256((__m256i*)dest, data0);
+		_mm256_storeu_si256((__m256i*)((char*)dest + 32), data1);
+		return dest;
+	}
     if (dest < src) 
 	{
-        size_t prefetch_distance = 64;
+        register size_t prefetch_distance = 64;
 
         for (size_t i = 0; i < n; i += prefetch_distance)
 			_mm_prefetch((const char*)src + i, _MM_HINT_T0);
@@ -78,7 +97,7 @@ void *ft_memmove_ERMS(void *dest, const void *src, size_t n)
 	{
         dest = (char*)dest + n - 1;
         src = (const char*)src + n - 1;
-		size_t prefetch_distance = 64;
+		register size_t prefetch_distance = 64;
 
 		for (size_t i = 0; i < n; i += prefetch_distance)
 			_mm_prefetch((const char*)src - i, _MM_HINT_T0);
@@ -93,5 +112,7 @@ void *ft_memmove_ERMS(void *dest, const void *src, size_t n)
         );
     }
 
-    return ret;
+	return ret;
 }
+
+
