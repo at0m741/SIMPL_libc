@@ -16,8 +16,8 @@ __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 #include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
-#include "../../libft.h"
-size_t ft_strlen_AVX(const char *s) 
+
+size_t _strlen_avx(const char *s) 
 {
     const char		*ptr = s;
     const __m256i	zero = _mm256_setzero_si256();
@@ -53,16 +53,3 @@ size_t ft_strlen_AVX(const char *s)
 
     return 0;
 }
-
-
-size_t ft_strlen_BASE(const char *s) 
-{
-	const char *endptr;
-
-	endptr = s;
-	while (*endptr)
-		endptr++;
-	return (endptr - s);
-}
-
-libft_ifunc_init(ft_strlen, size_t, IFUNC_AVX, const char *);

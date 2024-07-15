@@ -13,7 +13,6 @@ typedef int16_t		int_fast16_t;
 typedef int16_t		int_least16_t;
 typedef uint16_t	uint_fast16_t;
 typedef uint16_t	uint_least16_t;
-
 typedef int32_t		int_fast32_t;
 typedef int32_t		int_least32_t;
 typedef uint32_t	uint_fast32_t;

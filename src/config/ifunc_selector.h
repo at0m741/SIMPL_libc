@@ -11,6 +11,7 @@ enum ifunc_type_u {
 };
 
 #ifdef VERBOSE
+#include <stdio.h>
 # define IFUNC_LOG(func) printf("ifunc %s is selected\n", #func);
 #else
 # define IFUNC_LOG(func)
@@ -21,23 +22,23 @@ enum ifunc_type_u {
   return func;
 
 #define __ifunc_create_prototype(name, type_name, ...)                         \
-  type_name name##_ERMS(__VA_ARGS__);                                          \
-  type_name name##_AVX(__VA_ARGS__);                                           \
-  type_name name##_SSE(__VA_ARGS__);                                           \
-  type_name name##_BASE(__VA_ARGS__);
+  type_name name##_erms(__VA_ARGS__);                                          \
+  type_name name##_avx(__VA_ARGS__);                                           \
+  type_name name##_sse(__VA_ARGS__);                                           \
+  type_name name##_base(__VA_ARGS__);
 
 #define __ifunc_creator(name, type_name, version, ...)                         \
 	type_name (*name##_ifunc())(__VA_ARGS__) {                                 \
     if ((version & IFUNC_ERMS) && simd_support.erms) {                         \
-      _func_selected(name##_ERMS)                                              \
+      _func_selected(name##_erms)                                              \
     }                                                                          \
     if ((version & IFUNC_AVX) && simd_support.avx) {                           \
-      _func_selected(name##_AVX);                                              \
+      _func_selected(name##_avx);                                              \
     }                                                                          \
     if ((version & IFUNC_SSE) && simd_support.sse) {                           \
-      _func_selected(name##_SSE);                                              \
+      _func_selected(name##_sse);                                              \
     }                                                                          \
-    _func_selected(name##_BASE);                                               \
+    _func_selected(name##_base);                                               \
   }
 
 #define libft_ifunc_init(name, type_name, version, ...)                        \

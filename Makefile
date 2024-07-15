@@ -9,8 +9,16 @@ TEST_BIN = benchmark
 
 NASM_FLAGS = -f elf64 -g -F dwarf -I $(INCLUDE_DIR)
 AS = nasm
-CC = clang
-CFLAGS = -O3 -mavx2 -masm=intel -mtune=native -Wall -Wextra -Werror
+#chagne for clang prblem sorryyyyyyy......
+CC = gcc
+
+# optimisation flags
+CFLAGS = -O3 -mavx2 -masm=intel -mtune=native 
+# protection flags
+CFLAGS += -Wall -Wextra -Werror
+# dependecy flags
+CFLAGS += -MMD -MP
+
 PIC_FLAGS = -fPIC
 
 # Finding all C source files

@@ -71,6 +71,9 @@ typedef _ALIGN(64) int64_t		aint64_t;
 typedef _ALIGN(64) uint64_t		auint64_t;
 typedef _ALIGN(64) float64_t	afloat64_t;
 
+typedef uint32_t __uint32_t;
+typedef int32_t __int32_t;
+
 /* Boolean type for C */
 #ifndef __cplusplus
 typedef _Bool bool;

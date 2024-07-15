@@ -1,9 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 #include <x86intrin.h>
 #include <immintrin.h>
 #include <stddef.h>
@@ -63,9 +60,9 @@ int ft_strncmp(const char *s1, const char *s2, size_t n);
     *@note if the str is not aligned on a 32 bytes boundary, 
     the function will handle the initial bytes separately 
 */
-size_t ft_strlen(const char *s);
-size_t ft_strlen_avx(const char *s);
-size_t ft_strlen_sse(const char *s);
+size_t _strlen(const char *s);
+size_t _strlen_avx(const char *s);
+size_t _strlen_sse(const char *s);
 size_t strlen_sse(const char *s);
 size_t ft_strlen_sse_asm(const char *s);
 size_t ft_strlen_avx_asm(const char *s);

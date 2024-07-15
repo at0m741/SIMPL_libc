@@ -1,4 +1,6 @@
 #include <time.h>
+#include </usr/include/string.h>
+#include <stdio.h>
 #include "libft.h"
 
 void benchmark(size_t size, size_t iterations) {
@@ -123,11 +125,11 @@ void bench_strlen(size_t iter)
 	double cpu_time_used;
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
-		len = ft_strlen(str);
+		len = _strlen(str);
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-	printf("ft_strlen: %f seconds\n", cpu_time_used);
+	printf("_strlen: %f seconds\n", cpu_time_used);
 	
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
@@ -135,7 +137,7 @@ void bench_strlen(size_t iter)
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-	printf("ft_strlen_avx_asm: %f seconds\n", cpu_time_used);
+	printf("_strlen_avx_asm: %f seconds\n", cpu_time_used);
 
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
@@ -144,7 +146,7 @@ void bench_strlen(size_t iter)
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-	printf("ft_strlen_sse_asm: %f seconds\n", cpu_time_used);
+	printf("_strlen_sse_asm: %f seconds\n", cpu_time_used);
 
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
