@@ -121,20 +121,11 @@ int ERMS()
 */
 void *ft_memset_ERMS(void *b, int c, size_t len) 
 {
-    unsigned char	*ptr = (unsigned char *)b;
-    unsigned char	value = (unsigned char)c;
-
-	size_t prefetch_distance = 64;
-	for (size_t i = 0; i < len; i += prefetch_distance) {
-		__builtin_prefetch((const char*)ptr + i);
-	}
-    __asm__ __volatile__(
-        "rep stosb"
-        : "=D"(ptr), "=c"(len)
-        : "0"(ptr), "1"(len), "a"(value)
-        : "memory");
-
-    return b;
+	__asm__ __volatile__ (
+		"rep stosb"
+		: "+D"(b), "+c"(len)
+		: "a"(c)
+		: "memory"
+	);	
+	return b;
 }
-
-

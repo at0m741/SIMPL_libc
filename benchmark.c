@@ -20,7 +20,7 @@ void benchmark(size_t size, size_t iterations) {
 
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (size_t i = 0; i < iterations; i++) {
-        ft_memmove_ERMS_AVX2(dest1, src, size);
+        ft_memmove_ERMS(dest1, src, size);
     }
     clock_gettime(CLOCK_MONOTONIC, &end);
     cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
