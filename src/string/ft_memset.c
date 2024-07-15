@@ -14,6 +14,7 @@
 #include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
+#include "../../libft.h"
 
 inline void *ft_memset(void *b, int c, size_t len) 
 {

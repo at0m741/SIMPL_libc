@@ -67,7 +67,8 @@ size_t ft_strlen(const char *s);
 size_t ft_strlen_avx(const char *s);
 size_t ft_strlen_sse(const char *s);
 size_t strlen_sse(const char *s);
-
+size_t ft_strlen_sse_asm(const char *s);
+size_t ft_strlen_avx_asm(const char *s);
 /**
 	*@brief copy n bytes from src to dst
 	*@param dst The destination buffer

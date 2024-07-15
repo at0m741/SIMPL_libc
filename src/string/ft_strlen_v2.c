@@ -17,7 +17,8 @@
 #include <immintrin.h>
 #include <stdlib.h>
 #include <stdint.h>
-
+#include <config.h>
+#include "../../libft.h"
 inline size_t ft_strlen_avx(const char *s)
 {
 	if (__builtin_expect(s == NULL, 0))

@@ -14,7 +14,7 @@
 #include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
-
+#include "../../libft.h"
 
 char *ft_strchr(const char *p, int ch)
 {

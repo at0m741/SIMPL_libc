@@ -1,14 +1,26 @@
 LIB_NAME = libc_avx.a
 SO_NAME = libc_avx.so
-ASM_DIR = asm_out
-SRC_DIR = src
-INCLUDE_DIR = include
 OBJ_DIR = obj
+SRC_DIR = src
+ASM_SRC_DIR = asm_src
+INCLUDE_DIR = include
+TEST_SRC = benchmark.c
+TEST_BIN = benchmark
 
+NASM_FLAGS = -f elf64 -g -F dwarf -I $(INCLUDE_DIR)
+AS = nasm
 CC = clang
 CFLAGS = -O3 -mavx2 -masm=intel -mtune=native -Wall -Wextra -Werror
+PIC_FLAGS = -fPIC
+
+# Finding all C source files
 SRC = $(shell find $(SRC_DIR) -name '*.c')
+# Finding all assembly files
+ASM_FILES = $(shell find $(ASM_SRC_DIR) -name '*.s')
+
+# Generating object file names for C and assembly files
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
+ASM_OBJ = $(patsubst $(ASM_SRC_DIR)/%.s, $(OBJ_DIR)/%.o, $(ASM_FILES))
 
 INCLUDE = -I $(INCLUDE_DIR)
 INCLUDE += -I $(SRC_DIR)/config
@@ -17,31 +29,43 @@ ifeq ($(VERBOSE), true)
 	CFLAGS += -D VERBOSE
 endif
 
-asm: $(SRC)
-	@mkdir -p $(ASM_DIR)
-	@$(foreach src, $(SRC), \
-		$(CC) $(CFLAGS) -S -o $(ASM_DIR)/$(notdir $(src:.c=.s)) $(src);)
+all: $(LIB_NAME) $(SO_NAME)
 
-so: $(SRC)
-	$(CC) $(CFLAGS) $(INCLUDE) -fPIC -shared -o $(SO_NAME) $(SRC)
-
-all: $(LIB_NAME)
-
-$(LIB_NAME): $(OBJ)
-	ar rcs $(LIB_NAME) $(INCLUDE) $(OBJ)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+$(OBJ_DIR)/%:
+	@mkdir -p $(OBJ_DIR)/$*
+
+# Rule to compile C source files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(PIC_FLAGS) $(INCLUDE) -c $< -o $@
+
+# Rule to compile assembly files
+$(OBJ_DIR)/%.o: $(ASM_SRC_DIR)/%.s | $(OBJ_DIR)
+	@mkdir -p $(dir $@)
+	$(AS) $(NASM_FLAGS) -o $@ $<
+
+# Static library
+$(LIB_NAME): $(OBJ) $(ASM_OBJ)
+	ar rcs $@ $^
+
+# Shared library
+$(SO_NAME): $(OBJ) $(ASM_OBJ)
+	$(CC) $(CFLAGS) $(PIC_FLAGS) $(INCLUDE) -shared -o $@ $(OBJ) $(ASM_OBJ)
+
+# Benchmark executable
+$(TEST_BIN): $(TEST_SRC) $(LIB_NAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(INCLUDE) -L. -l:$(LIB_NAME)
 
 clean:
 	rm -f $(OBJ_DIR)/*.o
-	rm -rf $(ASM_DIR)
-	rm -f $(SO_NAME)
+	rm -f $(LIB_NAME) $(SO_NAME) $(TEST_BIN)
 
 fclean: clean
-	rm -f $(LIB_NAME)
+	rm -rf $(OBJ_DIR)
 
 re: fclean all
 
-.PHONY: all clean fclean re asm so
+.PHONY: all clean fclean re

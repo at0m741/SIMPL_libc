@@ -70,6 +70,44 @@ void benchmark(size_t size, size_t iterations) {
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
 	printf("ft_memset_ERMS: %f seconds\n", cpu_time_used);
+	
+	printf("\n--------------------------------------\n\n");
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	for (size_t i = 0; i < iterations; i++) {
+		ft_memcpy(dest1, src, size);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+	printf("ft_memcpy_ERMS_AVX2: %f seconds\n", cpu_time_used);
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	for (size_t i = 0; i < iterations; i++) {
+		memcpy(dest2, src, size);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+	printf("standard memcpy: %f seconds\n", cpu_time_used);
+	
+	printf("\n--------------------------------------\n\n");
+
+	int len = 0;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	for (size_t i = 0; i < iterations; i++) {
+		len = ft_strncmp(dest1, dest2, size);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+	printf("ft_strncmp: %f seconds\n", cpu_time_used);
+
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	for (size_t i = 0; i < iterations; i++) {
+		len = strncmp(dest1, dest2, size);
+	}
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+	printf("standard strncmp: %f seconds\n", cpu_time_used);
 
     free(src);
     free(dest1);
@@ -83,7 +121,6 @@ void bench_strlen(size_t iter)
 
 	struct timespec start, end;
 	double cpu_time_used;
-
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
 		len = ft_strlen(str);
@@ -94,19 +131,20 @@ void bench_strlen(size_t iter)
 	
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
-		len = ft_strlen_avx(str);
+		len = ft_strlen_avx_asm(str);
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-	printf("ft_strlen_avx: %f seconds\n", cpu_time_used);
+	printf("ft_strlen_avx_asm: %f seconds\n", cpu_time_used);
 
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
-		len = ft_strlen_sse(str);
+		len = ft_strlen_sse_asm(str);
+
 	}
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	cpu_time_used = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-	printf("ft_strlen_sse: %f seconds\n", cpu_time_used);
+	printf("ft_strlen_sse_asm: %f seconds\n", cpu_time_used);
 
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	for (size_t i = 0; i < iter; i++) {
@@ -119,7 +157,7 @@ void bench_strlen(size_t iter)
 
 int main() {
     size_t size = 1024 * 1024; // 1 MB
-    size_t iterations = 100000;
+    size_t iterations = 10000;
 
     benchmark(size, iterations);
 	printf("\n--------------------------------------\n\n");

@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <immintrin.h>
 #include <stdlib.h>
+#include <config.h>
+#include "../../libft.h"
 
 /*
  * this implementation of the memmove function uses AVX2 
