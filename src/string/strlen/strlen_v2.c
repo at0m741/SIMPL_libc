@@ -14,11 +14,10 @@
  *  The function uses prefetching to improve performance.
 */
 
-#include <immintrin.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <config.h>
-#include "../../libft.h"
+#include <immintrin.h>
 
 inline size_t ft_strlen_AVX(const char *s)
 {

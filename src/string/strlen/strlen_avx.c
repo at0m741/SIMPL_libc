@@ -13,9 +13,9 @@
 __builtin_ctz() is a builtin function that returns the number of trailing 0-bits
 */
 
-#include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
+#include <immintrin.h>
 
 size_t _strlen_avx(const char *s) 
 {

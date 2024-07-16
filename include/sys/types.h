@@ -74,6 +74,11 @@ typedef _ALIGN(64) float64_t	afloat64_t;
 typedef uint32_t __uint32_t;
 typedef int32_t __int32_t;
 
+/* Size and pointer difference types */
+typedef unsigned long		size_t;
+typedef long				ptrdiff_t;
+
+
 /* Boolean type for C */
 #ifndef __cplusplus
 typedef _Bool bool;
