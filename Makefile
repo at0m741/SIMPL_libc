@@ -25,7 +25,7 @@ LDFLAGS = -nostartfiles -nodefaultlibs
 # Finding all C source files
 SRC = $(shell find $(SRC_DIR) -name '*.c')
 # Finding all assembly files
-ASM_FILES = $(shell find $(ASM_SRC_DIR) -name '*.s')
+ASM_FILES = $(shell find $(ASM_SRC_DIR) $(SRC_DIR) -name '*.s')
 
 # Generating object file names for C and assembly files
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
