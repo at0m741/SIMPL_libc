@@ -9,10 +9,10 @@
 * The function is optimized for large strings and strings with a length multiple of 32.
 */
 
-#include <immintrin.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <config.h>
+#include <immintrin.h>
 
 char *ft_strncpy(char *dst, const char *src, size_t n)
 {

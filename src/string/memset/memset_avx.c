@@ -14,9 +14,8 @@
 #include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
-#include "../../libft.h"
 
-inline void *ft_memset(void *b, int c, size_t len) 
+void *_memset_avx(void *b, int c, size_t len) 
 {
 	if (__builtin_expect(b == NULL, 0) || len == 0)
 		return b;
@@ -95,37 +94,3 @@ inline void *ft_memset(void *b, int c, size_t len)
 	* The function checks if the ninth bit of the ECX register is set.	
 	* The function returns 1 if the ninth bit of the ECX register is set, otherwise it returns 0.
 	*/
-int ERMS()
-{
-	uint32_t	eax, ebx, ecx, edx;
-	eax = 7;
-	ecx = 0;
-
-	__asm__ __volatile__(
-		"cpuid"
-		: "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
-		: "a"(eax), "c"(ecx)
-	);
-	return (ecx & (1 << 9)) != 0;
-}
-
-
-/*
-	* explanation:
-* MOVSB copies a byte from the memory location pointed by the DS:SI registers to the memory location pointed by the ES:DI registers.
-* REP repeats the MOVSB instruction CX times.
-* The function uses the REP STOSB instruction to set the memory pointed by b to the value c.
-* The function uses the Enhanced REP MOVSB/STOSB feature if it is supported by the CPU.
-* The function uses the regular memset function if the Enhanced REP MOVSB/STOSB feature is not supported by the CPU.
-* The function returns the pointer to the memory block.
-*/
-void *ft_memset_ERMS(void *b, int c, size_t len) 
-{
-	__asm__ __volatile__ (
-		"rep stosb"
-		: "+D"(b), "+c"(len)
-		: "a"(c)
-		: "memory"
-	);	
-	return b;
-}

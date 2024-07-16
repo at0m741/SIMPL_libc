@@ -11,10 +11,9 @@
 	* The function is optimized for large strings and strings with a length multiple of 32.
 */
 
-#include <immintrin.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../../libft.h"
+#include <immintrin.h>
 
 inline int ft_strncmp(const char *s1, const char *s2, size_t n)
 {	

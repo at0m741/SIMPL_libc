@@ -5,6 +5,20 @@
 
 simd_support_t simd_support;
 
+int __has_erms(void)
+{
+	uint32_t	eax, ebx, ecx, edx;
+	eax = 7;
+	ecx = 0;
+
+	__asm__ __volatile__(
+		"cpuid"
+		: "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+		: "a"(eax), "c"(ecx)
+	);
+	return (ecx & (1 << 9)) != 0;
+}
+
 static simd_support_t detect_cpu_features() {
   unsigned int eax, ebx, ecx, edx;
 
@@ -34,6 +48,7 @@ static simd_support_t detect_cpu_features() {
     simd_support.avx512bw = ebx & bit_AVX512BW ? 1 : 0;
     simd_support.avx512vl = ebx & bit_AVX512VL ? 1 : 0;
   }
+	simd_support.erms = __has_erms() ? 1 : 0;
 
   return simd_support;
 }

@@ -9,10 +9,10 @@
  *  If there is no zero byte, it increments the pointer by 16 bytes and repeats the process.
 */
 
-#include <immintrin.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <config.h>
+#include <immintrin.h>
 
 inline size_t _strlen_sse(const char *s)
 {

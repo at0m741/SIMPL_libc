@@ -33,10 +33,6 @@ typedef int					intptr_t;
 typedef unsigned int		uintptr_t;
 #endif
 
-/* Size and pointer difference types */
-typedef unsigned long		size_t;
-typedef long				ptrdiff_t;
-
 /* Macros for minimum-width integer constants */
 # if __ARCH_WIDTH == 64
 #  define __INT64_C(c)	c ## L
