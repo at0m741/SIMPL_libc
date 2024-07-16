@@ -9,17 +9,18 @@ TEST_BIN = benchmark
 
 NASM_FLAGS = -f elf64 -g -F dwarf -I $(INCLUDE_DIR)
 AS = nasm
-#chagne for clang prblem sorryyyyyyy......
-CC = gcc
+CC = clang
 
 # optimisation flags
 CFLAGS = -O3 -mavx2 -masm=intel -mtune=native 
 # protection flags
 CFLAGS += -Wall -Wextra -Werror
-# dependecy flags
+# dependency flags
 CFLAGS += -MMD -MP
 
 PIC_FLAGS = -fPIC
+
+LDFLAGS = -nostartfiles -nodefaultlibs
 
 # Finding all C source files
 SRC = $(shell find $(SRC_DIR) -name '*.c')
@@ -61,11 +62,11 @@ $(LIB_NAME): $(OBJ) $(ASM_OBJ)
 
 # Shared library
 $(SO_NAME): $(OBJ) $(ASM_OBJ)
-	$(CC) $(CFLAGS) $(PIC_FLAGS) $(INCLUDE) -shared -o $@ $(OBJ) $(ASM_OBJ)
+	$(CC) $(LDFLAGS) $(PIC_FLAGS) $(INCLUDE) -shared -o $@ $(OBJ) $(ASM_OBJ)
 
 # Benchmark executable
 $(TEST_BIN): $(TEST_SRC) $(LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(INCLUDE) -L. -l:$(LIB_NAME)
+	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^ $(INCLUDE) -L. -l:$(LIB_NAME)
 
 clean:
 	rm -f $(OBJ_DIR)/*.o

@@ -3,6 +3,6 @@
 
 int main()
 {
-	ft_strlen("Test");
+	strlen("Test");
 }
 

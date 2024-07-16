@@ -4,6 +4,6 @@
 typedef unsigned long		size_t;
 
 
-size_t ft_strlen (const char *str);
+size_t strlen (const char *str);
 
 #endif // __STRING_H__

@@ -2,4 +2,4 @@
 
 libft_ifunc_init(_strlen, size_t, IFUNC_AVX, const char *);
 
-libft_weak_alias(ft_strlen, _strlen)
+libft_weak_alias(strlen, _strlen)
