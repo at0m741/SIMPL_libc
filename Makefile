@@ -38,6 +38,10 @@ ifeq ($(VERBOSE), true)
 	CFLAGS += -D VERBOSE
 endif
 
+ifeq ($(DEBUG), true)
+	CFLAGS += -g
+endif
+
 all: $(LIB_NAME) $(SO_NAME)
 
 $(OBJ_DIR):
