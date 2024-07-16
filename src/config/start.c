@@ -51,3 +51,18 @@ void exit(int status)
 	while (1);
 
 }
+
+
+typedef int (*main_func)(int, char**, char**);
+
+// Minimal prototype of __libc_start_main
+int __libc_start_main(main_func main, int argc, char** argv, char** envp) {
+    // Call main directly with provided arguments
+    int exit_status = main(argc, argv, envp);
+
+    // Terminate the program
+    exit(exit_status); // Replace with a syscall or appropriate exit mechanism
+
+    // Normally __libc_start_main should not return
+    return exit_status; // This line is effectively never reached
+}
