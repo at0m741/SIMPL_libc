@@ -4,7 +4,7 @@
 /*
 	* _start is the entry point of this new libc
 	* this is the first function called by this libc (optimized with love by babonnet and ltouzali)
-	* it's a main that calls the real main yes it's a main that calls the real main main in a main for the main, u kno budy ????!!!!!!!!
+	* it's a main that calls the real main yes it's a main that calls the real main main in a main for the main, u know budy ????!!!!!!!!
 */
 
 /*
@@ -16,7 +16,7 @@ int main(int argc, char **argv, char **envp);
 
 void _start(void) __attribute__((naked));
 
-void _exit(int status) __attribute__((noreturn));
+void exit(int status) __attribute__((noreturn));
 
 void _start(void)
 {
@@ -36,7 +36,7 @@ void _start(void)
     );
 }
 
-void _exit(int status)
+void exit(int status)
 {
 	__asm__ __volatile__
 	(
