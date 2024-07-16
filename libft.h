@@ -50,6 +50,9 @@ void check_cpu_features();
     * @return int 0 if the strings are equal, otherwise the difference between the first two differing bytes
     
 */
+
+extern void write(int fd, const char *buffer, size_t length);
+
 int ft_strncmp(const char *s1, const char *s2, size_t n);
 /**
     *@brief get the length of a string
