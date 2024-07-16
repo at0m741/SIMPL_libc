@@ -7,9 +7,16 @@
 	* it's a main that calls the real main yes it's a main that calls the real main main in a main for the main, u kno budy ????!!!!!!!!
 */
 
+/*
+	* _exit is the function called when the main returns
+	* it's a syscall to exit the program
+*/
+
 int main(int argc, char **argv, char **envp);
 
 void _start(void) __attribute__((naked));
+
+void _exit(int status) __attribute__((noreturn));
 
 void _start(void)
 {
@@ -29,3 +36,18 @@ void _start(void)
     );
 }
 
+void _exit(int status)
+{
+	__asm__ __volatile__
+	(
+		"movl $60, %%eax\n"				/* syscall exit (code is 60) */
+		"movl %0, %%edi\n"				/* status to edi */
+		"syscall\n"						/* call the exit syscall */
+		:
+		: "r" (status)
+		: "rax", "rdi"					/* clobbered registers used over */
+	);
+
+	while (1);
+
+}
