@@ -14,7 +14,7 @@
 #include <config.h>
 #include <immintrin.h>
 
-inline size_t _strlen_sse(const char *s)
+size_t _strlen_sse(const char *s)
 {
 	if (__builtin_expect(s == NULL, 0))
 		return 0;
