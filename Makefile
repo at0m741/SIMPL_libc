@@ -34,13 +34,24 @@ ASM_OBJ = $(patsubst $(ASM_SRC_DIR)/%.s, $(OBJ_DIR)/%.o, $(ASM_FILES))
 INCLUDE = -I $(INCLUDE_DIR)
 INCLUDE += -I $(SRC_DIR)/config
 
-ifeq ($(VERBOSE), true)
+
+MODE := [
+
+ifeq ($(VERBOSE),true)
+	MODE += "verbose : $(GREEN)on$(NC) "
 	CFLAGS += -D VERBOSE
+else
+	MODE += "verbose : $(RED)off$(NC) "
 endif
 
-ifeq ($(DEBUG), true)
+ifeq ($(DEBUG),true)
+	MODE += "debug : $(GREEN)on$(NC)"
 	CFLAGS += -g
+else
+	MODE += "debug : $(RED)off$(NC)"
 endif
+
+MODE += ]
 
 all: $(LIB_NAME) $(SO_NAME)
 
@@ -53,13 +64,13 @@ $(OBJ_DIR)/%:
 # Rule to compile C source files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	@echo "[$(YELLOW)$(CC)$(NC)] Compiling $<...$(NC)"
+	@echo "[$(YELLOW)$(CC)$(NC)] $(MODE) Compiling $<...$(NC)"
 	@$(CC) $(CFLAGS) $(PIC_FLAGS) $(INCLUDE) -c $< -o $@
 
 # Rule to compile assembly files
 $(OBJ_DIR)/%.o: $(ASM_SRC_DIR)/%.s | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	@echo "[$(YELLOW)$(AS)$(NC)] Compiling $<...$(NC)"
+	@echo "[$(YELLOW)$(AS)$(NC)] $(MODE) Assembling $<...$(NC)"
 	@$(AS) $(NASM_FLAGS) -o $@ $<
 
 # Static library

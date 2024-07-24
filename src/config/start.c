@@ -55,14 +55,14 @@ void exit(int status)
 
 typedef int (*main_func)(int, char**, char**);
 
-// Minimal prototype of __libc_start_main
 int __libc_start_main(main_func main, int argc, char** argv, char** envp) {
-    // Call main directly with provided arguments
     int exit_status = main(argc, argv, envp);
 
-    // Terminate the program
-    exit(exit_status); // Replace with a syscall or appropriate exit mechanism
-
-    // Normally __libc_start_main should not return
-    return exit_status; // This line is effectively never reached
+	// get aux data after env (aux size 38)
+	// hwcap in aux (cpu info (could have avx sse data but less precise use in musl for threard data))
+	// libc page size in aux
+	// sysinfo in aux
+	// name program in aux (sure to be there compared to in argv[0]) for debug logging error reporting (perror) and the posix norm
+    exit(exit_status);
+    return exit_status;
 }
