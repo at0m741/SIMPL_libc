@@ -12,7 +12,7 @@ AS = nasm
 CC = clang
 
 # optimisation flags
-CFLAGS = -O3 -mavx2 -masm=intel -mtune=native 
+CFLAGS = -g -O3 -mavx2 -masm=intel -mtune=native 
 # protection flags
 CFLAGS += -Wall -Wextra -Werror
 # dependency flags

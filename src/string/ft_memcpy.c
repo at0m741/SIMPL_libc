@@ -22,31 +22,134 @@
 
 
 
-
-inline void *ft_memcpy(void *dest, const void *src, size_t n) 
+void *ft_memcpy(void *dest, const void *src, size_t n) 
 {
     void *ret = dest;
-    size_t prefetch_distance = 64;
-    size_t offset = 0;
-    for (size_t i = 0; i < n; i += prefetch_distance) 
-        _mm_prefetch((const char*)src + i + prefetch_distance, _MM_HINT_T0);
+
+    uintptr_t dest_ptr = (uintptr_t)dest;
+    uintptr_t src_ptr = (uintptr_t)src;
+
+    while (dest_ptr % 32 != 0 && n > 0) {
+        *(char *)dest_ptr = *(const char *)src_ptr;
+        dest_ptr++;
+        src_ptr++;
+        n--;
+    }
+
+	if (n <= 16) {
+		__m128i data = _mm_loadu_si128((const __m128i *)(src_ptr));
+		_mm_storeu_si128((__m128i *)(dest_ptr), data);
+		return ret;
+	}
 
     while (n >= 32) {
-        __m256i data = _mm256_loadu_si256((__m256i*)((char*)src + offset));
-        _mm256_storeu_si256((__m256i*)((char*)dest + offset), data);
-
-        offset += 32;
+        __m256i data = _mm256_loadu_si256((const __m256i *)(src_ptr));
+        _mm256_storeu_si256((__m256i *)(dest_ptr), data);
+        src_ptr += 32;
+        dest_ptr += 32;
         n -= 32;
-		_mm_prefetch((const char*)(src + offset + 32), _MM_HINT_T0);
     }
 
-    if (n > 0) {
-        __asm__ volatile (
-            "rep movsb"
-            : "+D" (dest), "+S" (src), "+c" (n)
-            :
-            : "memory"
-        );
+	if (n >= 64) {
+		__m256i data1 = _mm256_loadu_si256((const __m256i *)(src_ptr));
+		_mm256_storeu_si256((__m256i *)(dest_ptr), data1);
+		src_ptr += 64;
+		dest_ptr += 64;
+		_mm_prefetch((const char *)(src_ptr), _MM_HINT_T0);
+		__m256i data2 = _mm256_loadu_si256((const __m256i *)(src_ptr));
+		_mm256_storeu_si256((__m256i *)(dest_ptr), data2);
+		return ret;
+	} 
+
+	if (n >= 512 && n <= 2048) {
+		while (n >= 512) {
+			_mm_prefetch((const char *)(src_ptr + 512), _MM_HINT_T0);
+			__m256i data1 = _mm256_loadu_si256((const __m256i *)(src_ptr));
+			__m256i data2 = _mm256_loadu_si256((const __m256i *)(src_ptr + 32));
+			__m256i data3 = _mm256_loadu_si256((const __m256i *)(src_ptr + 64));
+			__m256i data4 = _mm256_loadu_si256((const __m256i *)(src_ptr + 96));
+			__m256i data5 = _mm256_loadu_si256((const __m256i *)(src_ptr + 128));
+			__m256i data6 = _mm256_loadu_si256((const __m256i *)(src_ptr + 160));
+			__m256i data7 = _mm256_loadu_si256((const __m256i *)(src_ptr + 192));
+			__m256i data8 = _mm256_loadu_si256((const __m256i *)(src_ptr + 224));
+			__m256i data9 = _mm256_loadu_si256((const __m256i *)(src_ptr + 256));
+			__m256i data10 = _mm256_loadu_si256((const __m256i *)(src_ptr + 288));
+			__m256i data11 = _mm256_loadu_si256((const __m256i *)(src_ptr + 320));
+			__m256i data12 = _mm256_loadu_si256((const __m256i *)(src_ptr + 352));
+			__m256i data13 = _mm256_loadu_si256((const __m256i *)(src_ptr + 384));
+			__m256i data14 = _mm256_loadu_si256((const __m256i *)(src_ptr + 416));
+			__m256i data15 = _mm256_loadu_si256((const __m256i *)(src_ptr + 448));
+			__m256i data16 = _mm256_loadu_si256((const __m256i *)(src_ptr + 480));
+			_mm256_storeu_si256((__m256i *)(dest_ptr), data1);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 32), data2);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 64), data3);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 96), data4);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 128), data5);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 160), data6);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 192), data7);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 224), data8);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 256), data9);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 288), data10);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 320), data11);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 352), data12);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 384), data13);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 416), data14);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 448), data15);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 480), data16);
+			src_ptr += 512;
+			dest_ptr += 512;
+			n -= 512;
+		}
+	}
+
+	_mm_prefetch((const char *)(src_ptr), _MM_HINT_T0);
+    if (n >= 4096) {
+		while (n >= 4096) {
+			_mm_prefetch((const char *)(src_ptr + 512), _MM_HINT_T0);
+			__m256i data1 = _mm256_loadu_si256((const __m256i *)(src_ptr));
+			__m256i data2 = _mm256_loadu_si256((const __m256i *)(src_ptr + 32));
+			__m256i data3 = _mm256_loadu_si256((const __m256i *)(src_ptr + 64));
+			__m256i data4 = _mm256_loadu_si256((const __m256i *)(src_ptr + 96));
+			__m256i data5 = _mm256_loadu_si256((const __m256i *)(src_ptr + 128));
+			__m256i data6 = _mm256_loadu_si256((const __m256i *)(src_ptr + 160));
+			__m256i data7 = _mm256_loadu_si256((const __m256i *)(src_ptr + 192));
+			__m256i data8 = _mm256_loadu_si256((const __m256i *)(src_ptr + 224));
+			__m256i data9 = _mm256_loadu_si256((const __m256i *)(src_ptr + 256));
+			__m256i data10 = _mm256_loadu_si256((const __m256i *)(src_ptr + 288));
+			__m256i data11 = _mm256_loadu_si256((const __m256i *)(src_ptr + 320));
+			__m256i data12 = _mm256_loadu_si256((const __m256i *)(src_ptr + 352));
+			__m256i data13 = _mm256_loadu_si256((const __m256i *)(src_ptr + 384));
+			__m256i data14 = _mm256_loadu_si256((const __m256i *)(src_ptr + 416));
+			__m256i data15 = _mm256_loadu_si256((const __m256i *)(src_ptr + 448));
+			__m256i data16 = _mm256_loadu_si256((const __m256i *)(src_ptr + 480));
+			_mm256_storeu_si256((__m256i *)(dest_ptr), data1);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 32), data2);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 64), data3);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 96), data4);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 128), data5);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 160), data6);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 192), data7);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 224), data8);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 256), data9);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 288), data10);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 320), data11);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 352), data12);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 384), data13);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 416), data14);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 448), data15);
+			_mm256_storeu_si256((__m256i *)(dest_ptr + 480), data16);
+			src_ptr += 512;
+			dest_ptr += 512;
+			n -= 512;
+		}
+	}
+	while (n > 0) {
+        *(char *)dest_ptr = *(const char *)src_ptr;
+        dest_ptr++;
+        src_ptr++;
+        n--;
     }
+
     return ret;
 }
+

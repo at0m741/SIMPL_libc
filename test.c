@@ -11,6 +11,10 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	(void)env;
-	/* memset(test, **av, 3); */
+	
+	char *str = "Hello, World!";
+	printf("%s\n", str);
+	memset(str, 'A', 5);
+	printf("%p\n", str);
 }
 
