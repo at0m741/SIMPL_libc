@@ -44,9 +44,22 @@ void exit(int status)
 /* __libc_start_main implementation */
 typedef int (*main_func)(int, char**, char**);
 
+<<<<<<< HEAD
 int __libc_start_main(main_func main, int argc, char** argv, char** envp) 
 {
     int exit_status = main(argc, argv, envp);
     exit(exit_status);
     return exit_status;  /* This line will never be reached */
+=======
+int __libc_start_main(main_func main, int argc, char** argv, char** envp) {
+    int exit_status = main(argc, argv, envp);
+
+	// get aux data after env (aux size 38)
+	// hwcap in aux (cpu info (could have avx sse data but less precise use in musl for threard data))
+	// libc page size in aux
+	// sysinfo in aux
+	// name program in aux (sure to be there compared to in argv[0]) for debug logging error reporting (perror) and the posix norm
+    exit(exit_status);
+    return exit_status;
+>>>>>>> refs/remotes/origin/CPP
 }
