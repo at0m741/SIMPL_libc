@@ -3,23 +3,23 @@
 
 #include <stdint.h>
 
-#define Bit_MMX        (1 << 23)
-#define Bit_SSE        (1 << 25)
-#define Bit_SSE2       (1 << 26)
-#define Bit_SSE3       (1 << 0)
-#define Bit_SSSE3      (1 << 9)
-#define Bit_SSE4_1     (1 << 19)
-#define Bit_SSE4_2     (1 << 20)
-#define Bit_AVX        (1 << 28)
-#define Bit_AVX2       (1 << 5)
-#define Bit_AVX512F    (1 << 16)
-#define Bit_AVX512DQ   (1 << 17)
-#define Bit_AVX512IFMA (1 << 21)
-#define Bit_AVX512PF   (1 << 26)
-#define Bit_AVX512ER   (1 << 27)
-#define Bit_AVX512CD   (1 << 28)
-#define Bit_AVX512BW   (1 << 30)
-#define Bit_AVX512VL   (1 << 31)
+#define bit_MMX        (1 << 23)
+#define bit_SSE        (1 << 25)
+#define bit_SSE2       (1 << 26)
+#define bit_SSE3       (1 << 0)
+#define bit_SSSE3      (1 << 9)
+#define bit_SSE4_1     (1 << 19)
+#define bit_SSE4_2     (1 << 20)
+#define bit_AVX        (1 << 28)
+#define bit_AVX2       (1 << 5)
+#define bit_AVX512F    (1 << 16)
+#define bit_AVX512DQ   (1 << 17)
+#define bit_AVX512IFMA (1 << 21)
+#define bit_AVX512PF   (1 << 26)
+#define bit_AVX512ER   (1 << 27)
+#define bit_AVX512CD   (1 << 28)
+#define bit_AVX512BW   (1 << 30)
+#define bit_AVX512VL   (1 << 31)
 
 typedef union simd_support_u {
     uint32_t cpu_id;
@@ -41,9 +41,8 @@ typedef union simd_support_u {
         uint8_t avx512cd  : 1;
         uint8_t avx512bw  : 1;
         uint8_t avx512vl  : 1;
-        uint8_t erms	  : 1;
-
-		uint32_t padding  : 14;
+        uint8_t erms      : 1;
+        uint32_t padding  : 14;
     };
 } simd_support_t;
 
