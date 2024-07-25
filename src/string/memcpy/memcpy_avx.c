@@ -13,7 +13,7 @@
 		* prefetch the next 32 bytes to improve performance.
 	*/
 
-	/*
+/*
 		* chunks is the number of 32 bytes chunks in the memory block.
 		* remaining_bytes is the number of bytes that are not part of a 32 bytes chunk.
 		* The function copies the memory 32 bytes at a time.
@@ -22,7 +22,7 @@
 
 
 
-void *ft_memcpy_AVX(void *dest, const void *src, size_t n) 
+void *_memcpy_avx(void *dest, const void *src, size_t n) 
 {
     void *ret = dest;
 
