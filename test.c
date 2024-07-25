@@ -3,26 +3,29 @@
 #include "/usr/include/stdlib.h"
 #include "./src/config/cpuid_conf.h"
 
-int main(int ac, char **av, char **env) {
-
-    if (ac <= 1)
-        return 1;
-
-    int i = strlen(av[1]);
-    printf("%d\n", i);
-
-    char *str = malloc(5);
-    if (!str) {
-        printf("Erreur d'allocation de mémoire\n");
-        return 1;
-    }
-
-    memset(str, 0, 5);  // Initialiser la mémoire allouée
+int main(int ac, char **av, char **env)
+{
+	/* char test[] = "ffffffffffffffffff"; */
+	if (ac <= 1)
+		return 1;
+	int i = strlen(av[1]);
+	i = strncmp(av[1], "qqqq", 3);
+	i = strlen(av[1]);
+	i = strlen(av[1]);
+	i = strlen(av[1]);
+	i = strncmp(av[1], "qqqq", 3);
+	printf("%d\n", i);
+	(void)ac;
+	(void)av;
+	(void)env;
+	
+	char *str = malloc(sizeof(char) * 10);
+	memcpy(str, "qqq0", 4);
+	printf("%s\n", str);
+	memset(str, 0, 10);
+	printf("%s\n", str);
 	printf("%p\n", str);
-    memset(str, 'A', 5);
-    printf("%p\n", str);
-    printf("%s\n", str); // Affiche le contenu de str
-    free(str);
-
-    return 0;
+	free(str);
+	return 0;
 }
+
