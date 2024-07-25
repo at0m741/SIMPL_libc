@@ -42,6 +42,7 @@ void* _mmap(void* start, size_t len, int prot, int flags, int fd, size_t offset)
 		start = 0;
 	}
 	/* these registers are used to pass the arguments to the syscall */
+	/* make the mmap syscall */
 
     void* result;
     register uint64_t r10 asm("r10") = flags;
@@ -72,7 +73,50 @@ void* _mmap(void* start, size_t len, int prot, int flags, int fd, size_t offset)
 
 	/* check if the result is negative */
 	/* if it is, return MAP_FAILED */
-    if ((uint64_t)result < 0) {
+
+    if ((uint64_t)result >= (uint64_t)-4095) {
+        return MAP_FAILED;
+    }
+
+    return result;
+}
+
+/* munmap syscall */
+/* 
+ * int munmap(void *addr, size_t length);
+ * 
+ * addr: starting address of the memory region to be unmapped
+ * length: length of the memory region to be unmapped
+ * 
+ * return value: 0 on success, -1 on failure
+ * 
+ * This function unmaps the memory region of length length starting from addr.
+ */
+
+
+void* my_munmap(void* addr, size_t length) {
+    if (!length) {
+        return MAP_FAILED;
+    }
+
+    void* result;
+	
+	/* make munmap syscall */
+	/* rax = 0xb, syscall number of munmap */
+	/* rdi = addr, starting address of the memory region to be unmapped */
+	/* rsi = length, length of the memory region to be unmapped */
+	/* syscall, result is stored in rax */
+
+    __asm__ __volatile__ (
+        ".intel_syntax noprefix\n"
+        "mov rax, 0xb\n"
+        "syscall\n"
+        : "=a"(result)
+        : "D"(addr), "S"(length)
+        : "memory", "rcx", "r11"
+    );
+
+    if ((uint64_t)result >= (uint64_t)-4095) {
         return MAP_FAILED;
     }
 

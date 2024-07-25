@@ -5,7 +5,6 @@
 
 int main(int ac, char **av, char **env)
 {
-	/* char test[] = "ffffffffffffffffff"; */
 	if (ac <= 1)
 		return 1;
 	int i = strlen(av[1]);
