@@ -1,8 +1,8 @@
 section .text
-global ft_memcpy_avx
+global ft_memcpy_avx_asm
 
 ; void* memcpy(void* dest, const void* src, size_t n);
-ft_memcpy_avx:
+ft_memcpy_avx_asm:
     ; Arguments:
     ; dest: rdi
     ; src:  rsi
