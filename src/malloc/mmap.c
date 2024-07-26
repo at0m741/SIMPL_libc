@@ -1,4 +1,4 @@
-#include <config.h>
+#include "malloc.h"
 
 /* mmap syscall */
 /* 
@@ -19,16 +19,6 @@
  * 
  * If the function fails, it returns MAP_FAILED.
  */
-
-#define PROT_READ 0x1
-#define PROT_WRITE 0x2
-#define PROT_EXEC 0x4
-
-#define MAP_PRIVATE 0x02
-#define MAP_ANONYMOUS 0x20
-#define MAP_FAILED ((void *)-1)
-
-#define MAP_FIXED 0x10
 
 
 void* _mmap(void* start, size_t len, int prot, int flags, int fd, size_t offset) {
@@ -94,12 +84,12 @@ void* _mmap(void* start, size_t len, int prot, int flags, int fd, size_t offset)
  */
 
 
-void* my_munmap(void* addr, size_t length) {
+int _munmap(void* addr, size_t length) {
     if (!length) {
-        return MAP_FAILED;
+        return -1;
     }
 
-    void* result;
+    int result;
 	
 	/* make munmap syscall */
 	/* rax = 0xb, syscall number of munmap */
@@ -116,10 +106,6 @@ void* my_munmap(void* addr, size_t length) {
         : "memory", "rcx", "r11"
     );
 
-    if ((uint64_t)result >= (uint64_t)-4095) {
-        return MAP_FAILED;
-    }
-
-    return result;
+    return (result < 0) ? -1 : 0;
 }
 
