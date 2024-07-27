@@ -50,6 +50,7 @@ static __inline int __get_cpuid_count__(uint32_t __leaf, uint32_t __subleaf,
 #define Bit_SSE2       (1 << 26)
 #define Bit_SSE3       (1 << 0)
 #define Bit_SSSE3      (1 << 9)
+#define Bit_ERMS       (1 << 9)
 #define Bit_SSE4_1     (1 << 19)
 #define Bit_SSE4_2     (1 << 20)
 #define Bit_AVX        (1 << 28)
