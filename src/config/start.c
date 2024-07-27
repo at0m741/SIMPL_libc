@@ -11,37 +11,38 @@ void exit(int status) __attribute__((noreturn));
 typedef int lsm2_fn(int (*) (int, char **, char **), int, char **, char **);
 
 
-void _start(void)
-{
-    __asm__ __volatile__
-    (
-        "xor %%ebp, %%ebp\n"            /* Clear the base pointer */
-        "mov %%rdx, %%r9\n"             /* Move the third argument to r9 */
-        "pop %%rsi\n"                   /* Pop the return address to rsi (argv) */
-        "mov %%rsp, %%rdx\n"            /* Move stack pointer to rdx (envp) */
-        "andq $-16, %%rsp\n"            /* Align stack pointer to 16-byte boundary */
-        "mov $0, %%r8\n"                /* Zero out r8 */
-		"mov %%rsp, %%rdi\n"            /* Move stack pointer to rdi (argc) */
-		"call _start\n"                 /* Call _start */
-		"call __libc_start_main\n"      /* Call __libc_start_main */
-        :
-        :
-        : "rdi", "rsi", "rdx", "rcx", "r9", "r8"  /* Indicate which registers are clobbered */
-    );
-}
+//void _start(void)
+//{
+//    __asm__ __volatile__
+//    (
+//        "xor %%ebp, %%ebp\n"            /* Clear the base pointer */
+//        "mov %%rdx, %%r9\n"             /* Move the third argument to r9 */
+//        "pop %%rsi\n"                   /* Pop the return address to rsi (argv) */
+//        "mov %%rsp, %%rdx\n"            /* Move stack pointer to rdx (envp) */
+//        "andq $-16, %%rsp\n"            /* Align stack pointer to 16-byte boundary */
+//        "mov $0, %%r8\n"                /* Zero out r8 */
+//		"mov %%rsp, %%rdi\n"            /* Move stack pointer to rdi (argc) */
+//		"call _start\n"                 /* Call _start */
+//		"call __libc_start_main\n"      /* Call __libc_start_main */
+//        :
+//        :
+//        : "rdi", "rsi", "rdx", "rcx", "r9", "r8"  /* Indicate which registers are clobbered */
+//    );
+//}
 
 /* exit implementation */
 void exit(int status)
 {
     __asm__ __volatile__
     (
-        "movl $60, %%eax\n"             /* syscall number for exit is 60 */
-        "movl %0, %%edi\n"              /* Move the status into edi */
-        "syscall\n"                     /* Execute the syscall */
-        :
-        : "r" (status)
-        : "rax", "rdi"                  /* Indicate which registers are clobbered */
-    );
+		".intel_syntax noprefix\n"
+        "mov rax, 60\n"                 /* syscall number for exit */
+		"mov rdi, %0\n"                 /* status */
+		"syscall\n"                     /* make the syscall */
+		:
+		: "g" (status)
+		: "rax", "rdi"
+	);
 
     while (1);  /* Ensure the function does not return */
 }

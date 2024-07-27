@@ -10,6 +10,7 @@ int __has_erms(void) {
     ecx = 0;
 
     __asm__ __volatile__(
+		".intel_syntax noprefix\n"
         "cpuid"
         : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
         : "a"(eax), "c"(ecx)
