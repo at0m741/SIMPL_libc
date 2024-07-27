@@ -16,7 +16,7 @@ CFLAGS = -O3 -mavx2 -masm=intel -mtune=native
 # protection flags
 CFLAGS += -Wall -Wextra -Werror
 # dependency flags
-CFLAGS += -MMD -MP
+CFLAGS += -MMD -MP -m64
 
 PIC_FLAGS = -fPIC
 

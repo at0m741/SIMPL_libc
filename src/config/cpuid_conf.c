@@ -1,4 +1,5 @@
 #include <cpuid.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #include "cpuid_conf.h"
@@ -20,12 +21,12 @@ int __has_erms(void)
 }
 
 static simd_support_t detect_cpu_features() {
-  unsigned int eax, ebx, ecx, edx;
+  uint32_t eax, ebx, ecx, edx;
 
 	
 	simd_support.cpu_id = 0;
   // CPUID with EAX=1: Processor Info and Feature Bits
-  if (__get_cpuid(1, &eax, &ebx, &ecx, &edx)) {
+  if (__get_cpuid__(1, &eax, &ebx, &ecx, &edx)) {
     simd_support.mmx = edx & bit_MMX ? 1 : 0;
     simd_support.sse = edx & bit_SSE ? 1 : 0;
     simd_support.sse2 = edx & bit_SSE2 ? 1 : 0;
@@ -37,7 +38,7 @@ static simd_support_t detect_cpu_features() {
   }
 
   // CPUID with EAX=7, ECX=0: Extended Features
-  if (__get_cpuid_count(7, 0, &eax, &ebx, &ecx, &edx)) {
+  if (__get_cpuid_count__(7, 0, &eax, &ebx, &ecx, &edx)) {
     simd_support.avx2 = ebx & bit_AVX2 ? 1 : 0;
     simd_support.avx512f = ebx & bit_AVX512F ? 1 : 0;
     simd_support.avx512dq = ebx & bit_AVX512DQ ? 1 : 0;
