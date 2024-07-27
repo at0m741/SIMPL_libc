@@ -11,11 +11,10 @@
 	* The function is optimized for large strings and strings with a length multiple of 32.
 */
 
-#include <stdlib.h>
 #include <stdint.h>
 #include <immintrin.h>
 
-inline int ft_strncmp(const char *s1, const char *s2, size_t n)
+int _strncmp_avx(const char *s1, const char *s2, size_t n)
 {	
 	if (__builtin_expect(n == 0, 0) || __builtin_expect(s1 == s2, 0))
 		return 0;

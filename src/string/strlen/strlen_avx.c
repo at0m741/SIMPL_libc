@@ -53,11 +53,11 @@ size_t _strlen_avx(const char *s)
 
     return 0;
 }
-
-void test (){
-
-	char *s;
-	char *d;
-	UNROLL_4(_mm256_storeu_si256(d++, _mm256_loadu_si256(s++)))
-	
-}
+/*  */
+/* void test (){ */
+/*  */
+/* 	char *s; */
+/* 	char *d; */
+/* 	UNROLL_4(_mm256_storeu_si256(d++, _mm256_loadu_si256(s++))) */
+/* 	 */
+/* } */

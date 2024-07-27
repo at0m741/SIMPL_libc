@@ -1,22 +1,11 @@
-
 #include <config.h>
-
-/*
-	* _start is the entry point of this new libc
-	* this is the first function called by this libc (optimized with love by babonnet and ltouzali)
-	* it's a main that calls the real main yes it's a main that calls the real main main in a main for the main, u know budy ????!!!!!!!!
-*/
-
-/*
-	* _exit is the function called when the main returns
-	* it's a syscall to exit the program
-*/
 
 int main(int argc, char **argv, char **envp);
 
+/* _start is the entry point of this new libc */
 void _start(void) __attribute__((naked));
 
-void _exit(int status) __attribute__((noreturn));
+void exit(int status) __attribute__((noreturn));
 
 //void _start(void)
 //{
@@ -53,16 +42,49 @@ void _exit(int status)
 
 libft_weak_alias(exit, _exit)
 
+
+typedef int lsm2_fn(int (*) (int, char **, char **), int, char **, char **);
+
+
+void _start(void)
+{
+    __asm__ __volatile__
+    (
+        "xor %%ebp, %%ebp\n"            /* Clear the base pointer */
+        "mov %%rdx, %%r9\n"             /* Move the third argument to r9 */
+        "pop %%rsi\n"                   /* Pop the return address to rsi (argv) */
+        "mov %%rsp, %%rdx\n"            /* Move stack pointer to rdx (envp) */
+        "andq $-16, %%rsp\n"            /* Align stack pointer to 16-byte boundary */
+        "mov $0, %%r8\n"                /* Zero out r8 */
+		"mov %%rsp, %%rdi\n"            /* Move stack pointer to rdi (argc) */
+		"call _start\n"                 /* Call _start */
+		"call __libc_start_main\n"      /* Call __libc_start_main */
+        :
+        :
+        : "rdi", "rsi", "rdx", "rcx", "r9", "r8"  /* Indicate which registers are clobbered */
+    );
+}
+
+/* __libc_start_main implementation */
 typedef int (*main_func)(int, char**, char**);
 
-int __libc_start_main(main_func main, int argc, char** argv, char** envp) {
+int __libc_start_main(main_func main, int argc, char** argv, char** envp) 
+{
     int exit_status = main(argc, argv, envp);
-
-	// get aux data after env (aux size 38)
-	// hwcap in aux (cpu info (could have avx sse data but less precise use in musl for threard data))
-	// libc page size in aux
-	// sysinfo in aux
-	// name program in aux (sure to be there compared to in argv[0]) for debug logging error reporting (perror) and the posix norm
     exit(exit_status);
-    return exit_status;
+    return exit_status;  /* This line will never be reached */
 }
+
+
+/*  */
+/* int __libc_start_main(main_func main, int argc, char** argv, char** envp) { */
+/*     int exit_status = main(argc, argv, envp); */
+/*  */
+/* 	// get aux data after env (aux size 38) */
+/* 	// hwcap in aux (cpu info (could have avx sse data but less precise use in musl for threard data)) */
+/* 	// libc page size in aux */
+/* 	// sysinfo in aux */
+/* 	// name program in aux (sure to be there compared to in argv[0]) for debug logging error reporting (perror) and the posix norm */
+/*     exit(exit_status); */
+/*     return exit_status; */
+/* } */
