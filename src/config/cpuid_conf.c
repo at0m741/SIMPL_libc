@@ -49,6 +49,7 @@ static simd_support_t detect_cpu_features() {
     simd_support.avx512vl = ebx & bit_AVX512VL ? 1 : 0;
   }
 	simd_support.erms = 1; //__has_erms() ? 1 : 0;
+	return simd_support;
 }
 
 void print_features() {

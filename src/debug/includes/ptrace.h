@@ -20,7 +20,7 @@
 
 void _ptrace_init(void);
 void _ptrace_deinit(void);
-void _ptrace(void);
+long _ptrace(int request, int pid, void *addr, void *data);
 
 
 #endif // PTRACE_H
