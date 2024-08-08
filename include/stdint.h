@@ -55,7 +55,7 @@ typedef unsigned int		uintptr_t;
 
 #define UINT8_MAX  (0xff)
 #define UINT16_MAX (0xffff)
-#define UINT32_MAX (0xffffffffu)
+#define UINT32_MAX (0xffffffff)
 #define UINT64_MAX (__UINT64_C(0xffffffffffffffff))
 
 /* Limits of standard integer types */
@@ -72,9 +72,15 @@ typedef unsigned int		uintptr_t;
 #define UINT_MAX    UINT32_MAX
 
 /* Limits of long types */
-#define LONG_MIN    INT64_MIN
-#define LONG_MAX    INT64_MAX
-#define ULONG_MAX   UINT64_MAX
+#if __ARCH_WIDTH == 64
+# define LONG_MIN  INT64_MIN
+# define LONG_MAX  INT64_MAX
+# define ULONG_MAX UINT64_MAX
+#else
+# define LONG_MIN  INT32_MIN
+# define LONG_MAX  INT32_MAX
+# define ULONG_MAX UINT32_MAX
+#endif
 
 /* Limits of long long types */
 #define LLONG_MIN   INT64_MIN

@@ -3,6 +3,7 @@
 
 #include "ifunc_selector.h"
 #include <sys/stdargs.h>
+
 #if defined(__GNUC__) || defined(__clang__)
 #define libft_weak_alias(func, func_source) \
     __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
