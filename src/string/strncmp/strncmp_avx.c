@@ -21,7 +21,7 @@ int _strncmp_avx(const char *s1, const char *s2, size_t n)
 
     const char		*ptr1 = s1;
     const char		*ptr2 = s2;
-    size_t			chunks = n / 32;
+    size_t			chunks = n >> 5;
 	uintptr_t		align1 = (uintptr_t)ptr1 & 31;
 	uintptr_t		align2 = (uintptr_t)ptr2 & 31;
 
@@ -36,9 +36,8 @@ int _strncmp_avx(const char *s1, const char *s2, size_t n)
             ptr2++;
             n--;
         }
-        chunks = n / 32;
+        chunks = n >> 5;
     }
-
 
     while (chunks--)
     {
@@ -58,11 +57,9 @@ int _strncmp_avx(const char *s1, const char *s2, size_t n)
         ptr1 += 32;
         ptr2 += 32;
         n -= 32;
-		_mm_prefetch(ptr1, _MM_HINT_T0);
-		_mm_prefetch(ptr2, _MM_HINT_T0);
     }
 
-	n %= 32;
+	n &= 31;
 	while (n--)
 	{
 		if (*ptr1 != *ptr2)

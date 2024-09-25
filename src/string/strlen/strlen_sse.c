@@ -44,10 +44,8 @@ size_t _strlen_sse(const char *s)
 		* The _MM_HINT_T0 hint is used to indicate that the data is accessed soon.
 		* This hint is useful when the data is accessed sequentially.
 	*/
-	_mm_prefetch(s + 16, _MM_HINT_NTA);
 	while (1)
 	{
-		_mm_prefetch(s + 32, _MM_HINT_NTA);
 		__m128i data = _mm_loadu_si128((const __m128i *)s);
 		__m128i cmp = _mm_cmpeq_epi8(data, zero);
 		uint32_t mask = _mm_movemask_epi8(cmp);

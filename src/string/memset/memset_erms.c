@@ -12,6 +12,7 @@
 
 void *_memset_erms(void *b, int c, size_t len) 
 {
+	if (len == 0) return b;
 	__asm__ __volatile__ (
 		"rep stosb"
 		: "+D"(b), "+c"(len)

@@ -32,7 +32,7 @@ void _exit(int status)
     (
 		".intel_syntax noprefix\n"
         "mov rax, 60\n"                 /* syscall number for exit */
-		"mov rdi, %0\n"                 /* status */
+		"mov rdi, 0\n"                 /* status */
 		"syscall\n"                     /* make the syscall */
 		:
 		: "g" (status)

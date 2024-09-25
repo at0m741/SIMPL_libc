@@ -50,10 +50,8 @@ inline size_t ft_strlen_AVX(const char *s)
 		* The _MM_HINT_T0 hint is used to indicate that the data is accessed soon.
 		* This hint is useful when the data is accessed sequentially.
 	*/
-	_mm_prefetch(s + 64, _MM_HINT_NTA);
     while (1)
     {
-        _mm_prefetch(s + 128, _MM_HINT_NTA);
         __m256i data = _mm256_loadu_si256((const __m256i *)s);
         __m256i cmp = _mm256_cmpeq_epi8(data, zero);
         uint32_t mask = _mm256_movemask_epi8(cmp);
