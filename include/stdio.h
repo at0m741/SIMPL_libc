@@ -3,6 +3,6 @@
 
 int printf(const char *format, ...);
 
-int putchar(char c);
+int putchar(int c);
 
 #endif // __STDIO_H__

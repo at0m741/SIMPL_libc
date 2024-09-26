@@ -4,12 +4,14 @@
 typedef unsigned long		size_t;
 
 #if defined (__GNUC__) || defined (__clang__)
+#	undef __nonnull
 #	define __nonnull(...) __attribute__ ((__nonnull__ (__VA_ARGS__)))
 #else
 #	define __nonnull(...)
 #endif
 
 #if defined (__GNUC__) || defined (__clang__)
+# undef __attribute_pure__
 # define __attribute_pure__ __attribute__ ((__pure__))
 #else
 # define __attribute_pure__ /* Ignore */
