@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 16:06:35 by bbonnet           #+#    #+#             */
-/*   Updated: 2024/07/16 18:13:49 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:08:50 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ size_t ft_strlen(const char *str);
 int manage_char(va_list var, const char type);
 int print_pointer(unsigned long pointer);
 int display_wrong_flag(char c);
-
+void	ft_putsizet(size_t n);
 
 #endif

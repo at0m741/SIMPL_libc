@@ -7,23 +7,23 @@ void _start(void) __attribute__((naked));
 
 void exit(int status) __attribute__((noreturn));
 
-//void _start(void)
-//{
-//    __asm__ __volatile__
-//    (
-//        "mov %%rsp, %%rdi\n"			/* set up arguments for main */
-//        "lea 8(%%rsp), %%rsi\n"			/* argv  to rsi, why ? because..*/
-//        "mov %%rsi, %%rdx\n"			/* envp to rdx, minishell ?*/
-//        "add $8, %%rdx\n"				/* like MJ, jump over the envp */		
-//        "andq $-16, %%rsp\n"			/* align stack pointer over 16b*/
-//        "call main\n"
-//        "mov %%rax, %%rdi\n"			/* save return value (yes fuuuuu asm)*/
-//        "call exit\n"
-//        :
-//        :
-//        : "rdi", "rsi", "rdx", "rax"	/* clobbered registers used over*/
-//    );
-//}
+void _start(void)
+{
+    __asm__ __volatile__
+    (
+        "mov %%rsp, %%rdi\n"			/* set up arguments for main */
+        "lea 8(%%rsp), %%rsi\n"			/* argv  to rsi, why ? because..*/
+        "mov %%rsi, %%rdx\n"			/* envp to rdx, minishell ?*/
+        "add $8, %%rdx\n"				/* like MJ, jump over the envp */		
+        "andq $-16, %%rsp\n"			/* align stack pointer over 16b*/
+        "call main\n"
+        "mov %%rax, %%rdi\n"			/* save return value (yes fuuuuu asm)*/
+        "call exit\n"
+        :
+        :
+        : "rdi", "rsi", "rdx", "rax"	/* clobbered registers used over*/
+    );
+}
 
 
 void _exit(int status)
@@ -44,6 +44,8 @@ void _exit(int status)
 
 
 libft_weak_alias(exit, _exit)
+
+
 
 
 typedef int lsm2_fn(int (*) (int, char **, char **), int, char **, char **);

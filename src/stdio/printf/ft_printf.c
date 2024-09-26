@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:39:57 by babonnet          #+#    #+#             */
-/*   Updated: 2024/07/16 18:14:46 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:10:07 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int print_variable(va_list var, const char type)
 		ft_putnbr_base(va_arg(var, unsigned int), "0123456789ABCDEF", 16, &count);
 	else if (type == 'p')
 		count += print_pointer((unsigned long) va_arg(var, void *));
+	else if (type == 'z')
+		ft_putsizet(va_arg(var, size_t));
 	else if (type == '%')
 		count = write(1, "%", 1);
 	else

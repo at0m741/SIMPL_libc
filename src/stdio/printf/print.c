@@ -6,7 +6,7 @@
 /*   By: babonnet <babonnet@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 16:39:47 by babonnet          #+#    #+#             */
-/*   Updated: 2024/07/16 18:14:23 by babonnet         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:08:39 by babonnet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,17 @@ void	ft_putnbr_count(int n, int *count)
 	ft_putnbr_count(n % 10, count);
 }
 
+void	ft_putsizet(size_t n)
+{
+	if (n < 10)
+	{
+		ft_putchar_fd(n + '0', 1);
+		return ;
+	}
+	ft_putsizet(n / 10);
+	ft_putsizet(n % 10);
+}
+
 int print_pointer(unsigned long pointer)
 {
 	int count;
@@ -90,3 +101,4 @@ int display_wrong_flag(char c)
     write(1, &c, 1);
     return (2);
 }
+

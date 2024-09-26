@@ -27,7 +27,7 @@ void *_malloc(size_t size) {
             return block->aligned_address;
         }
     }
-
+	printf("Allocating with malloc\n");
     if (size >= MMAP_THRESHOLD)
         return request_space_mmap(size, ALIGNMENT);
     else {
