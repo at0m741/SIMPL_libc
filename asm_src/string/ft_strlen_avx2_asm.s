@@ -1,53 +1,61 @@
 section .text
 global ft_strlen_avx_asm
-
+%define PAGE_SIZE 4096
+%define VEC_SIZE 32
 
 ft_strlen_avx_asm:
-	test rdi, rdi
-	jz .return_zero
 
-	mov rcx, rdi
-	mov rax, rdi
-	and rcx, 31
-	jz .aligned
+    test        rdi, rdi
+    je          return_zero
 
-	vpxor ymm0, ymm0, ymm0
-	vmovdqu ymm1, [rdi]
-	vpcmpeqb ymm1, ymm0, ymm1
-	vpmovmskb eax, ymm1
-	test eax, eax
-	jz .unaligned_next
-	bsf eax, eax
-	ret
+    mov         rsi, rdi
+    mov         rax, rdi
+    and         eax, VEC_SIZE - 1
+    jz          aligned_start     ; If aligned, skip to aligned start
 
-.unaligned_next:
-	neg rcx
-	lea rax, [rdi + rcx]
-	add rax, 32
+    mov         ecx, VEC_SIZE
+    sub         ecx, eax
+    prefetcht0  [rdi + PAGE_SIZE]
+    vpxor       xmm0, xmm0, xmm0
+    vmovdqu     xmm1, [rdi]
+    vpcmpeqb    xmm1, xmm1, xmm0
+    pmovmskb    edx, xmm1
+    test        edx, edx
+    jne         found_null_unaligned   ; If a null byte is found, handle it
 
-.aligned:
-	prefetchnta [rax + 32]
-	mov rcx, rax
-	sub rcx, rdi
-	add rcx, -32
-	add rax, 32
-	vpxor ymm0, ymm0, ymm0
+    add         rdi, rcx
+    vzeroupper
+    jmp         aligned_start      ; Go to aligned handling
 
-.align_loop:
-	prefetchnta [rax + 32]
-	vmovdqa ymm1, [rax - 32]
-	vpcmpeqb ymm1, ymm0, ymm1
-	vpmovmskb edx, ymm1
-	add rcx, 32
-	add rax, 32
-	test edx, edx
-	jz .align_loop
-	bsf eax, edx
-	add rax, rcx
-	ret
+aligned_start:
+    vpxor       ymm0, ymm0, ymm0   ; Clear the ymm register for aligned operations
 
-.return_zero:
-	xor eax, eax
-	ret
+aligned_loop:
+    prefetcht0  [rdi + PAGE_SIZE]
+    vmovdqa     ymm1, [rdi]
+    vpcmpeqb    ymm1, ymm1, ymm0
+    vpmovmskb   edx, ymm1
+    test        edx, edx
+    jne         found_null_aligned
 
+    add         rdi, VEC_SIZE
+    jmp         aligned_loop
 
+found_null_unaligned:
+    bsf         eax, edx
+    sub         rdi, rsi
+    add         rax, rdi
+    vzeroupper
+    ret
+
+found_null_aligned:
+    bsf         eax, edx           ; Find the first zero byte
+    sub         rdi, rsi           ; Calculate bytes processed
+    add         rax, rdi           ; Total bytes processed + offset to null byte
+    vzeroupper
+    ret
+
+return_zero:
+    xor         eax, eax           ; Return 0
+    vzeroupper
+    ret

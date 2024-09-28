@@ -14,58 +14,54 @@
 #include <immintrin.h>
 #include <config.h>
 
-#define BITS 0x0101010101010101ULL
 
-/*
-* 0x0101010101010101ULL is a 64-bit constant with the value 0x01 repeated 8 times.
-* This constant is used to set 8 bytes to the value c.
-*
-* in binary 0x01 is 0000 0001 so :
-*
-* 00000001 00000001 00000001 00000001 
-* 00000001 00000001 00000001 00000001
-*
-*/
 
-void *_memset_avx(void *s, int c, size_t n) 
-{
-    unsigned char *p = (unsigned char *)s;
+#define REP_STOSB_THRESHOLD 2048
+#define UNROLL_SIZE 64
+#define VEC_SIZE 32
 
-    if (n == 0) return s;
+void *_memset_avx(void* dest, int c, size_t n) {
+    unsigned char* d = (unsigned char*)dest;
+    uint8_t value = (uint8_t)c;
 
-    __m256i fill = _mm256_set1_epi8((unsigned char)c);
-
-    size_t misalign = ((uintptr_t)p) & 31;
-    size_t align_size = misalign ? (32 - misalign) : 0;
-
-    if (align_size > n) align_size = n;
-
-    for (size_t i = 0; i < align_size; i++) {
-        *p++ = c;
-        n--;
+    if (n < VEC_SIZE) {
+        for (size_t i = 0; i < n; i++) {
+            d[i] = value;
+        }
+        return dest;
     }
 
-    while (n >= 32) {
-        _mm256_storeu_si256((__m256i *)p, fill);
-        p += 32;
-        n -= 32;
-    }
-	
-	while (n >= 16) {
-		_mm_storeu_si128((__m128i *)p, _mm256_castsi256_si128(fill));
-		p += 16;
-		n -= 16;
-	}
-
-    while (n >= 8) {
-        *(uint64_t *)p = (uint64_t)(unsigned char)c * BITS;
-        p += 8;
-        n -= 8;
+    if (n <= 2 * VEC_SIZE) {
+        for (size_t i = 0; i < n; i++) {
+            d[i] = value;
+        }
+        return dest;
     }
 
-    while (n--) {
-		*p++ = c;
+    if (n > REP_STOSB_THRESHOLD) {
+        __asm__ volatile (
+            "rep stosb"
+            : "+D" (d), "+c" (n)
+            : "a" (value)
+            : "memory"
+        );
+    } else {
+        __m256i vec = _mm256_set1_epi8(value);
+        size_t vec_count = n / VEC_SIZE;
+        size_t remainder = n & VEC_SIZE - 1;
+		_mm_prefetch((const char*)d + UNROLL_SIZE, _MM_HINT_T0);
+        for (size_t i = 0; i < vec_count; i++) {
+            _mm256_storeu_si256((__m256i*)d, vec);
+			_mm256_storeu_si256((__m256i*)(d + 32), vec);
+			_mm256_storeu_si256((__m256i*)(d + 64), vec);
+            d += UNROLL_SIZE;
+        }
+
+        for (size_t i = 0; i < remainder; i++) {
+            d[i] = value;
+        }
     }
-    return s;
+	_mm256_zeroupper();
+    return dest;
 }
 
