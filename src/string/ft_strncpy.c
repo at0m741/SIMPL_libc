@@ -14,7 +14,7 @@
 #include <config.h>
 #include <immintrin.h>
 
-char *ft_strncpy(char *dst, const char *src, size_t n)
+char *_strncpy_avx(char *dst, const char *src, size_t n)
 {
     char			*ptr = dst; 
 	size_t			chunks = n / VEC_SIZE;

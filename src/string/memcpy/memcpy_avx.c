@@ -26,7 +26,6 @@ void *_memcpy_avx(void *dest, const void *src, size_t n)
 {
 	if (__builtin_expect(n == 0, 0) ||\
 		__builtin_expect(dest == src, 0) ||\
-		__builtin_expect(n > 0x7fffffffffffffff, 0) ||\
 		__builtin_expect(dest == NULL || src == NULL, 0))
 		return dest;
 
