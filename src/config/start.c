@@ -43,7 +43,7 @@ void _exit(int status)
 }
 
 
-libft_weak_alias(exit, _exit)
+simpl_weak_alias(exit, _exit)
 
 
 

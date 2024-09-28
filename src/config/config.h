@@ -1,14 +1,17 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#include "ifunc_selector.h"
+#include "func_ifunc_selector.h"
 #include <sys/stdargs.h>
 
-#if defined(__GNUC__) || defined(__clang__)
-#define libft_weak_alias(func, func_source) \
+#if defined(__APPLE__)
+#define simpl_weak_alias(func, func_source) \
+    __typeof__(func_source) __attribute__((weak)) *func = &func_source;
+#elif defined(__GNUC__) || defined(__clang__)
+#define simpl_weak_alias(func, func_source) \
     __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
 #else
-#define libft_weak_alias(name, func)                                           \
+#define simpl_weak_alias(name, func)                                           \
   _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
 #endif
 

@@ -3,7 +3,7 @@
 
 #ifdef VERBOSE
 #define TOSTRING(x) #x
-#define LOG_HEADER(file) _Pragma(TOSTRING(message("Using ftlibc " file)))
+#define LOG_HEADER(file) _Pragma(TOSTRING(message("Using SIMPL libc " file)))
 #endif
 
 #endif

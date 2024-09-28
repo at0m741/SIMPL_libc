@@ -1,4 +1,3 @@
-
 /*
  * This implementation is based on the assumption that the string is not empty.
  * The function compares the string 32 bytes at a time using AVX2 instructions.
@@ -14,7 +13,6 @@
 #include <immintrin.h>
 #include <stdlib.h>
 #include <config.h>
-#include "../../libft.h"
 
 char *ft_strchr(const char *p, int ch)
 {
