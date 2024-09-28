@@ -46,4 +46,4 @@ We welcome contributions from the community! If you’re interested in contribut
 
 **SIMPL_libc** is licensed under the GPL 2.0 License. See the [LICENSE](./LICENSE) file for details.
 
-at0m741 and Bonsthie
+@at0m741 and @Bonsthie
