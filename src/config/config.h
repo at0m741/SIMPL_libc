@@ -4,12 +4,15 @@
 #include "ifunc_selector.h"
 #include <sys/stdargs.h>
 
-#if defined(__GNUC__) || defined(__clang__)
-#define libft_weak_alias(func, func_source) \
-    __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
+#if defined(__linux__) && (defined(__GNUC__) || defined(__clang__))
+    #define libft_weak_alias(func, func_source) \
+        __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
+#elif defined(__APPLE__) && defined(__MACH__)
+    #define libft_weak_alias(func, func_source) \
+        /* Weak alias is not supported on macOS, define an empty macro */
 #else
-#define libft_weak_alias(name, func)                                           \
-  _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
+    #define libft_weak_alias(func, func_source) \
+        _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
 #endif
 
 #define AVX2_ALIGNMENT 32
@@ -19,3 +22,4 @@
 #define VEC_SIZE 32
 
 #endif //__CONFIG_H__
+

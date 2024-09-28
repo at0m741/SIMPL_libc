@@ -1,6 +1,10 @@
 #include <config.h>
 
-int main(int argc, char **argv, char **envp);
+
+#ifndef __APPLE__
+#define _start __libc_start_main
+#define main _main
+#endif
 
 /* _start is the entry point of this new libc */
 void _start(void) __attribute__((naked));
@@ -9,88 +13,81 @@ void exit(int status) __attribute__((noreturn));
 
 void _start(void)
 {
+#ifdef __APPLE__
     __asm__ __volatile__
     (
-        "mov %%rsp, %%rdi\n"			/* set up arguments for main */
-        "lea 8(%%rsp), %%rsi\n"			/* argv  to rsi, why ? because..*/
-        "mov %%rsi, %%rdx\n"			/* envp to rdx, minishell ?*/
-        "add $8, %%rdx\n"				/* like MJ, jump over the envp */		
-        "andq $-16, %%rsp\n"			/* align stack pointer over 16b*/
-        "call main\n"
-        "mov %%rax, %%rdi\n"			/* save return value (yes fuuuuu asm)*/
-        "call exit\n"
+#ifdef BUILD_EXECUTABLE
+        "mov rsp, rdi\n"             /* Set up arguments for main */
+        "lea rsi, [rsp + 8]\n"       /* Load argv into rsi */
+        "mov rdx, rsi\n"             /* Move envp to rdx */
+        "add rdx, 8\n"               /* Adjust envp */
+        "and rsp, -16\n"             /* Align stack pointer to 16 bytes */
+        "call _main\n"               /* Call main function */
+        "mov rdi, rax\n"             /* Save return value */
+        "call _exit\n"               /* Call exit function */
+#else
+        "ret\n"                      /* For library, just return */
+#endif
         :
         :
-        : "rdi", "rsi", "rdx", "rax"	/* clobbered registers used over*/
+        : "rdi", "rsi", "rdx", "rax"    /* Clobbered registers */
     );
+#else
+    __asm__ __volatile__
+    (
+#ifdef BUILD_EXECUTABLE
+        "mov %%rsp, %%rdi\n"          /* Set up arguments for main */
+        "lea 8(%%rsp), %%rsi\n"       /* Load argv into rsi */
+        "mov %%rsi, %%rdx\n"          /* Move envp to rdx */
+        "add $8, %%rdx\n"             /* Adjust envp */
+        "andq $-16, %%rsp\n"          /* Align stack pointer to 16 bytes */
+        "call main\n"                 /* Call main function */
+        "mov %%rax, %%rdi\n"          /* Save return value */
+        "call exit\n"                 /* Call exit function */
+#else
+        "ret\n"                       /* For library, just return */
+#endif
+        :
+        :
+        : "rdi", "rsi", "rdx", "rax"  /* Clobbered registers */
+    );
+#endif
 }
-
 
 void _exit(int status)
 {
+#ifdef __APPLE__
     __asm__ __volatile__
     (
-		".intel_syntax noprefix\n"
-        "mov rax, 60\n"                 /* syscall number for exit */
-		"mov rdi, 0\n"                 /* status */
-		"syscall\n"                     /* make the syscall */
-		:
-		: "g" (status)
-		: "rax", "rdi"
-	);
+        "mov rax, 0x2000001\n"       /* Syscall number for exit (macOS) */
+        "mov rdi, %0\n"              /* Move status into rdi */
+        "syscall\n"                  /* Make the syscall */
+        :
+        : "r" ((long)status)         /* Input operand */
+        : "rax", "rdi"
+    );
+#else
+    __asm__ __volatile__
+    (
+        "mov $60, %%rax\n"           /* Syscall number for exit (Linux) */
+        "mov %0, %%rdi\n"            /* Move status into rdi */
+        "syscall\n"                  /* Make the syscall */
+        :
+        : "r" ((long)status)
+        : "rax", "rdi"
+    );
+#endif
 
     while (1);  /* Ensure the function does not return */
 }
 
-
-libft_weak_alias(exit, _exit)
-
-
-
-
-typedef int lsm2_fn(int (*) (int, char **, char **), int, char **, char **);
-
-
-//void _start(void)
-//{
-//    __asm__ __volatile__
-//    (
-//        "xor %%ebp, %%ebp\n"            /* Clear the base pointer */
-//        "mov %%rdx, %%r9\n"             /* Move the third argument to r9 */
-//        "pop %%rsi\n"                   /* Pop the return address to rsi (argv) */
-//        "mov %%rsp, %%rdx\n"            /* Move stack pointer to rdx (envp) */
-//        "andq $-16, %%rsp\n"            /* Align stack pointer to 16-byte boundary */
-//        "mov $0, %%r8\n"                /* Zero out r8 */
-//		"mov %%rsp, %%rdi\n"            /* Move stack pointer to rdi (argc) */
-//		"call _start\n"                 /* Call _start */
-//		"call __libc_start_main\n"      /* Call __libc_start_main */
-//        :
-//        :
-//        : "rdi", "rsi", "rdx", "rcx", "r9", "r8"  /* Indicate which registers are clobbered */
-//    );
-//}
-
-
-/* __libc_start_main implementation */
+/* Define main_func type */
 typedef int (*main_func)(int, char**, char**);
 
+/* __libc_start_main implementation */
 int __libc_start_main(main_func main, int argc, char** argv, char** envp) 
 {
     int exit_status = main(argc, argv, envp);
     exit(exit_status);
     return exit_status;  /* This line will never be reached */
 }
-
-
-/*  */
-/* int __libc_start_main(main_func main, int argc, char** argv, char** envp) { */
-/*     int exit_status = main(argc, argv, envp); */
-/*  */
-/* 	// get aux data after env (aux size 38) */
-/* 	// hwcap in aux (cpu info (could have avx sse data but less precise use in musl for threard data)) */
-/* 	// libc page size in aux */
-/* 	// sysinfo in aux */
-/* 	// name program in aux (sure to be there compared to in argv[0]) for debug logging error reporting (perror) and the posix norm */
-/*     exit(exit_status); */
-/*     return exit_status; */
-/* } */

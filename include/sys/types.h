@@ -1,6 +1,8 @@
 #ifndef  __SYS_TYPE_H__
 #define __SYS_TYPE_H__
 
+
+
 /* Determine architecture width */
 #if defined __x86_64__ && !defined __ILP32__
 # define __ARCH_WIDTH 64
@@ -21,7 +23,7 @@
 #endif
 
 /* Define 64-bit integer types based on architecture */
-#if __ARCH_WIDTH == 64
+#if __ARCH_WIDTH == 64 && !defined __APPLE__
 typedef unsigned long int __uint64_t;
 typedef signed long int __int64_t;
 #else
