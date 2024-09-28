@@ -64,17 +64,17 @@ $(SO_NAME): $(OBJ) $(ASM_OBJ)
 	@echo "Building shared library $@..."
 	@$(CC) $(LDFLAGS) $(PIC_FLAGS) $(INCLUDE) -shared -o $@ $(OBJ) $(ASM_OBJ)
 
-# Nettoyage des fichiers objets
+# Nettoyage des fichiers object
 clean:
 	@echo "Removing object files..."
 	@rm -rf $(OBJ_DIR)
 
-# Nettoyage complet des bibliothèques et exécutables
+# Nettoyage complete des bibliothèques et exécutables
 fclean: clean
 	@echo "Removing libraries and executables..."
 	@rm -f $(LIB_NAME) $(SO_NAME) $(TEST_BIN)
 
-# Rebuild complet
+# Rebuild complete
 re: fclean all
 
 .PHONY: all clean fclean re
