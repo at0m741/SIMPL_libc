@@ -1,5 +1,5 @@
-LIB_NAME = libc_avx.a
-SO_NAME = libc_avx.so
+LIB_NAME = SIMPL_libc.a
+SO_NAME = SIMPL_libc.so
 OBJ_DIR = obj
 SRC_DIR = src
 ASM_SRC_DIR = asm_src
@@ -7,16 +7,23 @@ INCLUDE_DIR = include
 TEST_SRC = benchmark.c
 TEST_BIN = benchmark
 
-NASM_FLAGS = -f macho64 -g -F dwarf -I $(INCLUDE_DIR)
+NASM_FLAGS = -g -F dwarf -I $(INCLUDE_DIR)
 AS = nasm
-CC = /usr/local/opt/llvm/bin/clang
+CC = clang
 AR = ar
 
 CFLAGS = -O3 -mavx2 -masm=intel -mtune=native
 CFLAGS += -Wall -Wextra -Werror
 CFLAGS += -MMD -MP -m64
 PIC_FLAGS = -fPIC
-LDFLAGS = -nostartfiles -nodefaultlibs -lc -lSystem
+LDFLAGS = -nostartfiles -nodefaultlibs 
+
+ifeq ($(TARGET), apple)
+	LDFLAGS += -lc -lSystem
+	NASM_FLAGS += -f macho64
+else
+	NASM_FLAGS += -f elf64
+endif
 
 SRC = $(shell find $(SRC_DIR) -type f -name '*.c')
 ASM_FILES = $(shell find $(ASM_SRC_DIR) -type f -name '*.s')

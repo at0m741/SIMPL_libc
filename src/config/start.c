@@ -1,11 +1,6 @@
 #include <config.h>
 
 
-#ifndef __APPLE__
-#define _start __libc_start_main
-#define main _main
-#endif
-
 /* _start is the entry point of this new libc */
 void _start(void) __attribute__((naked));
 
