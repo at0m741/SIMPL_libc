@@ -1,5 +1,5 @@
-#ifndef __IFUNC_SELECTOR_H__
-#define __IFUNC_SELECTOR_H__
+#ifndef __FUNC_IFUNC_SELECTOR_H__
+#define __FUNC_IFUNC_SELECTOR_H__
 
 #include "cpuid_conf.h"
 
@@ -44,9 +44,9 @@ enum ifunc_type_u {
     _func_selected(name##_base)                                                \
   }
 
-#define libft_ifunc_init(name, type_name, version, ...)                        \
+#define simpl_func_ifunc_init(name, type_name, version, ...)                        \
     extern type_name name(__VA_ARGS__) __attribute__((ifunc(#name "_ifunc"))); \
     __ifunc_create_prototype(name, type_name, __VA_ARGS__)                     \
     __ifunc_creator(name, type_name, version, __VA_ARGS__)
 
-#endif
+#endif /* __FUNC_IFUNC_SELECTOR_H__ */

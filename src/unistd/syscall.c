@@ -1,7 +1,4 @@
 #include <config.h>
-
-#include <unistd.h>
-#include <stdint.h>
 #include <stdarg.h>
 
 long _syscall(long number, ...) {

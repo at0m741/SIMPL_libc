@@ -81,7 +81,6 @@ void _exit(int status)
     while (1);  /* Ensure the function does not return */
 }
 
-/* Define main_func type */
 typedef int (*main_func)(int, char**, char**);
 
 /* __libc_start_main implementation */

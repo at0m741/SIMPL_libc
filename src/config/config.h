@@ -1,18 +1,20 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#include "ifunc_selector.h"
+#include "func_ifunc_selector.h"
 #include <sys/stdargs.h>
 
-#if defined(__linux__) && (defined(__GNUC__) || defined(__clang__))
-    #define libft_weak_alias(func, func_source) \
-        __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
-#elif defined(__APPLE__) && defined(__MACH__)
-    #define libft_weak_alias(func, func_source) \
-        /* Weak alias is not supported on macOS, define an empty macro */
+
+#if defined(__APPLE__)
+#define simpl_weak_alias(func, func_source) \
+    __typeof__(func_source) __attribute__((weak)) *func = &func_source;
+#elif defined(__GNUC__) || defined(__clang__)
+#define simpl_weak_alias(func, func_source) \
+    __typeof__(func_source) func __attribute__((weak, alias(#func_source)));
 #else
-    #define libft_weak_alias(func, func_source) \
-        _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
+#define simpl_weak_alias(name, func)                                           \
+  _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
+>>>>>>> refs/remotes/origin/CPP
 #endif
 
 #define AVX2_ALIGNMENT 32
