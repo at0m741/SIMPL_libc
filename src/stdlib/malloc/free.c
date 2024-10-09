@@ -52,7 +52,6 @@ void coalesce_free_blocks() {
 	* the number of freed blocks is incremented
 */
 
-#include <assert.h>
 
 void _free(void *ptr) {
     if (__builtin_expect(ptr == NULL, 0))

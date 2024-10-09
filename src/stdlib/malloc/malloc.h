@@ -1,13 +1,17 @@
 #ifndef MALLOC_H
 #define MALLOC_H
 
-#include <stdio.h>
 #include <unistd.h>
-#include <sys/mman.h>
 #include <immintrin.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <sys/mman.h>
 #include <string.h>
 
+#if !defined(__HAS_ASSERT__)
+#define assert(...) 
+#define __assert_fail(...)
+#endif
 
 
 /*

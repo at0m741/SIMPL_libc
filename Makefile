@@ -25,6 +25,11 @@ else
 	NASM_FLAGS += -f elf64
 endif
 
+ifeq ($(VERBOSE), true)
+	CFLAGS += -D VERBOSE
+endif
+
+
 SRC = $(shell find $(SRC_DIR) -type f -name '*.c')
 ASM_FILES = $(shell find $(ASM_SRC_DIR) -type f -name '*.s')
 

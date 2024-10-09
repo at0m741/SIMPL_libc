@@ -14,7 +14,6 @@
 #else
 #define simpl_weak_alias(name, func)                                           \
   _Pragma("GCC error \"Weak alias is not supported on this compiler\"")
->>>>>>> refs/remotes/origin/CPP
 #endif
 
 #define AVX2_ALIGNMENT 32

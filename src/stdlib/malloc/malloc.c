@@ -1,5 +1,9 @@
 #include "malloc.h"
 
+#if !defined(__HAS_ASSERT__)
+#define assert 
+#endif
+
 Block *freelist = NULL;
 int allocated_blocks = 0;
 int freed_blocks = 0;
