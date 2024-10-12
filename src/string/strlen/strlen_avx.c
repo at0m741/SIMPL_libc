@@ -44,7 +44,7 @@ size_t _strlen_avx(const char *str)
 
     while (1) 
     {
-	_mm_prefetch(str + 32, _MM_HINT_T0);
+		_mm_prefetch(str + 32, _MM_HINT_T0);
         __m256i ymm_data = _mm256_load_si256((__m256i*)str);  
         __m256i cmp_result = _mm256_cmpeq_epi8(ymm_zero, ymm_data);
         int32_t mask = _mm256_movemask_epi8(cmp_result);
