@@ -22,57 +22,48 @@
 
 
 
-void *_memcpy_avx(void *dest, const void *src, size_t n) 
-{
-	if (__builtin_expect(n == 0, 0) ||\
-		__builtin_expect(dest == src, 0) ||\
-		__builtin_expect(dest == NULL || src == NULL, 0))
-		return dest;
-
-    void *ret = dest;
-    uintptr_t dest_ptr = (uintptr_t)dest;
-    uintptr_t src_ptr = (uintptr_t)src;
-
-    while ((dest_ptr % 32 != 0) && n > 0) {
-        *(char *)dest_ptr = *(const char *)src_ptr;
-        dest_ptr++;
-        src_ptr++;
-        n--;
+void *_memcpy_avx(void *dest, const void *src, size_t len) {
+    if (len == 0 || dest == src) {
+        return dest;
     }
 
-    while (n >= 256) {
-        _mm_prefetch((const char *)(src_ptr + 256), _MM_HINT_T0);
-        for (int i = 0; i < 256; i += 32) {
-            __m256i data = _mm256_loadu_si256((const __m256i *)(src_ptr + i));
-            _mm256_storeu_si256((__m256i *)(dest_ptr + i), data);
-        }
-        src_ptr += 256;
-        dest_ptr += 256;
-        n -= 256;
+    uint8_t *cdest = (uint8_t *)dest;
+    const uint8_t *csrc = (const uint8_t *)src;
+
+    size_t num_blocks = len / 32; 
+    size_t remaining_bytes = len % 32;
+
+    size_t num_unrolled = num_blocks / 8;  
+    size_t remainder_blocks = num_blocks % 8;
+
+    const __m256i *s = (const __m256i *)csrc;
+    __m256i *d = (__m256i *)cdest;
+
+    for (size_t i = 0; i < num_unrolled; ++i) {
+		if (len <= 256)
+		{
+			_mm_prefetch((const char *)(s + 8), _MM_HINT_T0);
+			_mm_prefetch((const char *)(d + 8), _MM_HINT_T0);
+		}
+		_mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+		_mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
+	}	
+    for (size_t i = 0; i < remainder_blocks; ++i) {
+        _mm256_storeu_si256(d++, _mm256_loadu_si256(s++));
     }
 
-    while (n >= 32) {
-        __m256i data = _mm256_loadu_si256((const __m256i *)src_ptr);
-        _mm256_storeu_si256((__m256i *)dest_ptr, data);
-        src_ptr += 32;
-        dest_ptr += 32;
-        n -= 32;
+    uint8_t *byte_dest = (uint8_t *)d;
+    const uint8_t *byte_src = (const uint8_t *)s;
+    for (size_t i = 0; i < remaining_bytes; ++i) {
+        byte_dest[i] = byte_src[i];
     }
 
-    if (n >= 16) {
-        __m128i data = _mm_loadu_si128((const __m128i *)src_ptr);
-        _mm_storeu_si128((__m128i *)dest_ptr, data);
-        src_ptr += 16;
-        dest_ptr += 16;
-        n -= 16;
-    }
-
-    while (n > 0) {
-        *(char *)dest_ptr = *(const char *)src_ptr;
-        dest_ptr++;
-        src_ptr++;
-        n--;
-    }
-
-    return ret;
+    return dest;
 }
+
