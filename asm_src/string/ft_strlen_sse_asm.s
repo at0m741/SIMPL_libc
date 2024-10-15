@@ -32,7 +32,6 @@ ft_strlen_sse_asm:
     add rax, 16
     vpxor xmm0, xmm0, xmm0
 
-;aligned loop use the same code as the unaligned loop but with aligned (yes, a classic burger is a burger, but classic)
 
 .align_loop:
     prefetchnta [rax + 16]		; prefetch the next 32 bytes of memory in cache (non-temporal)

@@ -11,7 +11,7 @@ ft_strlen_avx_asm:
     mov         rsi, rdi
     mov         rax, rdi
     and         eax, VEC_SIZE - 1
-    jz          aligned_start     ; If aligned, skip to aligned start
+    jz          aligned_start    
 
     mov         ecx, VEC_SIZE
     sub         ecx, eax
@@ -21,14 +21,14 @@ ft_strlen_avx_asm:
     vpcmpeqb    xmm1, xmm1, xmm0
     pmovmskb    edx, xmm1
     test        edx, edx
-    jne         found_null_unaligned   ; If a null byte is found, handle it
+    jne         found_null_unaligned  
 
     add         rdi, rcx
     vzeroupper
-    jmp         aligned_start      ; Go to aligned handling
+    jmp         aligned_start  
 
 aligned_start:
-    vpxor       ymm0, ymm0, ymm0   ; Clear the ymm register for aligned operations
+    vpxor       ymm0, ymm0, ymm0   
 
 aligned_loop:
     prefetcht0  [rdi + PAGE_SIZE]
